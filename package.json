@@ -1,0 +1,11 @@
+{
+  "name": "",
+  "version": "",
+  "dependencies": {
+    "gl-matrix": "^2.8.1",
+    "twgl.js": "^4.5.2"
+  },
+  "devDependencies": {
+    "webpack": "^4.20.2"
+  }
+}
