@@ -1,4 +1,12 @@
 function initBuffers(gl) {
+
+  var img=document.getElementById("img1");
+  var canvas=document.getElementById("bufferCanvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx=canvas.getContext("2d");
+  ctx.drawImage(img, 0,0, img.width, img.height);
+
   var positionBuffer = assignPositions(gl);
   var colorBuffer = assignColors(gl);
   var indexBuffer = assignElement(gl);
@@ -21,40 +29,40 @@ function assignPositions(gl) {
 
   const positions = [
     // Front face
-    -1.0, -1.0,  1.0,
-     1.0, -1.0,  1.0,
-     1.0,  1.0,  1.0,
-    -1.0,  1.0,  1.0,
+    -0.10, -0.10,  0.10,
+    0.10, -0.10,  0.10,
+    0.10,  0.10,  0.10,
+    -0.10,  0.10,  0.10,
 
      // Front face
-     -1.0, -1.0,  1.0,
-     1.0, -1.0,  1.0,
-     1.0,  1.0,  1.0,
-    -1.0,  1.0,  1.0,
+     -0.10, -0.10,  0.05,
+     0.10, -0.10,  0.10,
+     0.10,  0.10,  0.10,
+    -0.10,  0.10,  0.10,
 
     // Top face
-    -1.0,  1.0, -1.0,
-    -1.0,  1.0,  1.0,
-    1.0,  1.0,  1.0,
-    1.0,  1.0, -1.0,
+    -0.10,  0.10, -0.20,
+    -0.10,  0.10,  0.10,
+    0.10,  0.10,  0.10,
+    0.10,  0.10, -0.10,
     
     // Bottom face
-    -1.0, -1.0, -1.0,
-    1.0, -1.0, -1.0,
-    1.0, -1.0,  1.0,
-    -1.0, -1.0,  1.0,
+    -0.10, -0.10, -0.10,
+    0.10, -0.10, -0.10,
+    0.10, -0.10,  0.10,
+    -0.10, -0.10,  0.10,
     
     // Right face
-    1.0, -1.0, -1.0,
-    1.0,  1.0, -1.0,
-    1.0,  1.0,  1.0,
-    1.0, -1.0,  1.0,
+    0.10, -0.10, -0.10,
+    0.10,  0.10, -0.10,
+    0.10,  0.10,  0.10,
+    0.10, -0.10,  0.10,
     
     // Left face
-    -1.0, -1.0, -1.0,
-    -1.0, -1.0,  1.0,
-    -1.0,  1.0,  1.0,
-    -1.0,  1.0, -1.0,
+    -0.10, -0.10, -0.10,
+    -0.10, -0.10,  0.10,
+    -0.10,  0.10,  0.10,
+    -0.10,  0.10, -0.10,
   ];
   // Now pass the list of positions into WebGL to build the
   // shape. We do this by creating a Float32Array from the
