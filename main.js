@@ -7,9 +7,11 @@ main();
 // start here
 //
 function main() {
+  
   // wait until canvas element is loaded.
   document.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
+    
     const canvas = document.querySelector("#glCanvas");
     // Initialize the GL context
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
@@ -33,20 +35,21 @@ function main() {
       },
     };
 
-    const buffers = initBuffers(gl);
     var then = 0;
-
-    // Draw the scene repeatedly
-    function render(now) {
-      now *= 0.001;  // convert to seconds
-      const deltaTime = now - then;
-      then = now;
-
-      drawScene(gl, programInfo, buffers, deltaTime);
-
+    //const buffers = initBuffers(gl);
+    initBuffers(gl, (buffers) => {
+      // Draw the scene repeatedly
+      function render(now) {
+        now *= 0.001;  // convert to seconds
+        const deltaTime = now - then;
+        then = now;
+  
+        drawScene(gl, programInfo, buffers, deltaTime);
+  
+        requestAnimationFrame(render);
+      }
       requestAnimationFrame(render);
-    }
-    requestAnimationFrame(render);
+    })
   });
 
 }
