@@ -41,8 +41,8 @@ function main() {
       console.log(buffers)
       // Draw the scene repeatedly
       function render(now) {
-        now *= 0.0005;  // convert to seconds
-        const deltaTime = now - then;
+        now *= 0.0008;  // convert to seconds
+        const deltaTime = 0;//now - then;
         then = now;
   
         drawScene(gl, programInfo, buffers, deltaTime);
