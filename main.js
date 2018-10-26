@@ -37,7 +37,8 @@ function main() {
 
     var then = 0;
     //const buffers = initBuffers(gl);
-    initBuffers(gl, (buffers) => {
+    initBuffers(gl).then(buffers => {
+      
       // Draw the scene repeatedly
       function render(now) {
         now *= 0.001;  // convert to seconds
