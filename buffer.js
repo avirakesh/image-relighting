@@ -6,7 +6,7 @@ function initBuffers(gl) {
       var bufferCanvas=document.getElementById("bufferCanvas");
       bufferCanvas.width = img.width;
       bufferCanvas.height = img.height;
-      console.log(img.width, img.height);
+      //console.log(img.width, img.height);
       bufferCanvas.getContext("2d").drawImage(img, 0,0, img.width, img.height);
 
       var positionBuffer = assignPositions(gl, bufferCanvas);
@@ -28,7 +28,7 @@ function initBuffers(gl) {
 function assignPositions(gl, bufferCanvas) {
   const xOffset = bufferCanvas.width / 2;
   const yOffset = bufferCanvas.height / 2;
-  const scale = 5;
+  const scale = 500;
   const positionBuffer = gl.createBuffer();
 
   // Select the positionBuffer as the one to apply buffer
@@ -39,6 +39,7 @@ function assignPositions(gl, bufferCanvas) {
   // Now create an array of positions for the square.
   const width = bufferCanvas.width;
   const height = bufferCanvas.height;
+  console.log(width, height);
   var data = bufferCanvas.getContext('2d').getImageData(0, 0, width, height).data;
   var x = 0;
   var y = 0;

@@ -38,10 +38,10 @@ function main() {
     var then = 0;
     //const buffers = initBuffers(gl);
     initBuffers(gl).then(buffers => {
-      
+      console.log(buffers)
       // Draw the scene repeatedly
       function render(now) {
-        now *= 0.001;  // convert to seconds
+        now *= 0.0005;  // convert to seconds
         const deltaTime = now - then;
         then = now;
   
