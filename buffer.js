@@ -7,7 +7,7 @@ function initBuffers(gl) {
       bufferCanvas.width = img.width;
       bufferCanvas.height = img.height;
       //console.log(img.width, img.height);
-      bufferCanvas.getContext("2d").drawImage(img, 0,0, img.width, img.height);
+      bufferCanvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height);
 
       var positionBuffer = assignPositions(gl, bufferCanvas);
       var colorBuffer = assignColors(gl, bufferCanvas);
@@ -51,7 +51,7 @@ function assignPositions(gl, bufferCanvas) {
     var g = data[i + 1];
     var b = data[i + 2];
     var a = data[i + 3];
-    var depth = (r + g + b + a) / 4 - 128;
+    var depth = 255 - (r + g + b + a) / 4;
     positions.push((x - xOffset) / scale);
     positions.push((-y + yOffset) / scale);
     positions.push(depth / 100);
