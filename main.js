@@ -1,6 +1,8 @@
-var cubeRotation = 0.0;
 
+var cubeRotation = 0.0;
+var isRotate = 1;
 const numComponents = 3;
+
 main();
 
 //
@@ -38,8 +40,14 @@ function main() {
     var then = 0;
     //const buffers = initBuffers(gl);
     Promise.all([
-      load.img("/images/testsmall.png", "imgDepth"),
-      load.img("/images/testsmallcolor.png", "imgColor"),
+      //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),        // not working
+      //load.img("/images/Tunnel-alternative.jpg", "imgColor"),     // not working
+      //load.img("/images/finalzdepth.png", "imgDepth"),            // not working
+      //load.img("/images/finalzdepth.png", "imgColor"),            // not working
+      //load.img("/images/test.jpg", "imgDepth"),                   // working
+      //load.img("/images/test.jpg", "imgColor"),                   // working
+      load.img("/images/testsmall.png", "imgDepth"),              // working
+      load.img("/images/testsmallcolor.png", "imgColor"),         // working
     ]).then(() => {
       initBuffers(gl).then(buffers => {
         console.log(buffers)
@@ -47,6 +55,9 @@ function main() {
         function render(now) {
           now *= 0.001;  // convert to seconds
           const deltaTime = now - then;
+          if (!isRotate) {
+            deltaTime = 0;
+          }
           then = now;
     
           drawScene(gl, programInfo, buffers, deltaTime);
@@ -108,5 +119,13 @@ function loadShader(gl, type, source) {
   }
 
   return shader;
+}
+
+function rotateModel() {
+  if (isRotate) {
+    isRotate = 0;
+  } else {
+    isRotate = 1;
+  }
 }
 
