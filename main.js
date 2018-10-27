@@ -40,6 +40,8 @@ function main() {
     var then = 0;
     //const buffers = initBuffers(gl);
     Promise.all([
+      //load.img("/images/Shelf-depthmap.jpg", "imgDepth"),         // not working
+      //load.img("/images/Shelf-alternative.jpg", "imgColor"),      // not working
       //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),        // not working
       //load.img("/images/Tunnel-alternative.jpg", "imgColor"),     // not working
       //load.img("/images/finalzdepth.png", "imgDepth"),            // not working
@@ -54,7 +56,7 @@ function main() {
         // Draw the scene repeatedly
         function render(now) {
           now *= 0.001;  // convert to seconds
-          const deltaTime = now - then;
+          var deltaTime = now - then;
           if (!isRotate) {
             deltaTime = 0;
           }
