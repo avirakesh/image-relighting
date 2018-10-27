@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <header>
+        <script src="loader.js"></script>
         <script src="gl-matrix.js"></script>
         <script src="vShader.js"></script>
         <script src="fShader.js"></script>
@@ -12,11 +13,13 @@
     </header>
     <body>
         <canvas id="bufferCanvas" hidden>buffer canvas</canvas>
+        <canvas id="bufferColorCanvas" hidden>buffer color canvas</canvas>
         <p>
             Hello World
         </p>
         <p>original picture</p>
         <img src="/images/testsmall.png">
+        <img src="/images/testsmallcolor.png">
         <p>3d conversion based on intensity</p>
         <canvas id="glCanvas" width="640" height="480">canvas</canvas>
     </body>
