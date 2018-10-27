@@ -20,7 +20,7 @@ function initBuffers(gl) {
     var colorBuffer = assignColors(gl, bufferColorCanvas);
     // load image from html and draw that on a hidden canvas
     // so that pixel information could be acquired using canvas
-    console.log("buffer length: ", positionBuffer.length, colorBuffer.length, indexResult.indexBuffer.length)
+    
     resolve({
       position: positionBuffer,
       color: colorBuffer,
@@ -35,7 +35,7 @@ function assignPositions(gl, bufferCanvas) {
   
   const xOffset = bufferCanvas.width / 2;
   const yOffset = bufferCanvas.height / 2;
-  const scale = Math.max(bufferCanvas.width, bufferCanvas.height) / 3;
+  const scale = Math.max(bufferCanvas.width, bufferCanvas.height)/4;
   console.log('scale ', scale)
   // Select the positionBuffer as the one to apply buffer
   // operations to from here out.
@@ -105,10 +105,11 @@ function assignElement(gl, bufferCanvas) {
   var width = bufferCanvas.width - 1;
   var height = bufferCanvas.height - 1;
   console.log(width, height);
-  var len = bufferCanvas.getContext('2d').getImageData(0, 0, width, height).data.length / 8;
+  // var len = bufferCanvas.getContext('2d').getImageData(0, 0, width, height).data.length / 4;
   var indices = [];
   for (i = 0; i < height; i ++) {
     for (j = 0; j < width; j ++) {
+      if (j + 1 === width) continue;
       var index = i * height + j;
       indices.push(index)
       indices.push(index + width)

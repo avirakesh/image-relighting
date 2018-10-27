@@ -40,16 +40,30 @@ function main() {
     var then = 0;
     //const buffers = initBuffers(gl);
     Promise.all([
-      //load.img("/images/Shelf-depthmap.jpg", "imgDepth"),         // not working
-      //load.img("/images/Shelf-alternative.jpg", "imgColor"),      // not working
-      //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),        // not working
-      //load.img("/images/Tunnel-alternative.jpg", "imgColor"),     // not working
-      //load.img("/images/finalzdepth.png", "imgDepth"),            // not working
-      //load.img("/images/finalzdepth.png", "imgColor"),            // not working
-      //load.img("/images/test.jpg", "imgDepth"),                   // working
-      //load.img("/images/test.jpg", "imgColor"),                   // working
-      load.img("/images/testsmall.png", "imgDepth"),              // working
-      load.img("/images/testsmallcolor.png", "imgColor"),         // working
+      //load.img("/images/bird0-depth.jpg", "imgDepth"),              // not working
+      //load.img("/images/bird0-alternative.jpg", "imgColor"),        // not working
+      //load.img("/images/bird0-depth-small.jpg", "imgDepth"),        //not working
+      //load.img("/images/bird0-alternative-small.jpg", "imgColor"),  //not working
+      //load.img("/images/flower1-depth.jpg", "imgDepth"),            // not working 
+      //load.img("/images/flower1-alternative.jpg", "imgColor"),      // not working
+      //load.img("/images/flower1-depth-small.jpg", "imgDepth"),      // kind of working, lossing many pixels
+      //load.img("/images/flower1-alternative-small.jpg", "imgColor"),// kind of working, lossing many pixels
+      //load.img("/images/Shelf-depthmap.jpg", "imgDepth"),           // not working
+      //load.img("/images/Shelf-alternative.jpg", "imgColor"),        // not working
+      //load.img("/images/Shelf-depthmap-small.jpg", "imgDepth"),     // kind of working
+      //load.img("/images/Shelf-alternative-small.jpg", "imgColor"),  // kind of working
+      //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),          // not working
+      //load.img("/images/Tunnel-alternative.jpg", "imgColor"),       // not working
+      //load.img("/images/Tunnel-depthmap-small.jpg", "imgDepth"),    // kind of working
+      //load.img("/images/Tunnel-alternative-small.jpg", "imgColor"), // kind of working
+      //load.img("/images/finalzdepth.png", "imgDepth"),              // not working
+      //load.img("/images/finalzdepth.png", "imgColor"),              // not working
+      //load.img("/images/finalzdepthsmall.png", "imgDepth"),         // not working
+      //load.img("/images/finalzdepthsmall.png", "imgColor"),         // not working
+      //load.img("/images/test.jpg", "imgDepth"),                     // working
+      //load.img("/images/test.jpg", "imgColor"),                     // working
+      load.img("/images/testsmall.png", "imgDepth"),                // working
+      load.img("/images/testsmallcolor.png", "imgColor"),           // working
     ]).then(() => {
       initBuffers(gl).then(buffers => {
         console.log(buffers)
