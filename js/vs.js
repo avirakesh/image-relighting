@@ -2,6 +2,7 @@ var vs_src = `
     precision highp float;
 
     uniform vec2 imgSize;
+    uniform vec2 minMaxZ;
     
     attribute vec3 vPos;
     
@@ -15,7 +16,7 @@ var vs_src = `
         vec3 pos;
         pos.x = (vPos.x / xDiv) - 1.0;
         pos.y = (-vPos.y / yDiv) + 1.0;
-        pos.z = (vPos.z / 255.0);
+        pos.z = ((vPos.z - minMaxZ.x) / (minMaxZ.y - minMaxZ.x));
 
         fPos  = pos;
         fColor = pos;

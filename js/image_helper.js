@@ -15,6 +15,7 @@ var ImgHelper = {
         imgContext.drawImage(srcImg, 0, 0);
 
         function createMeshFromImage() {
+            var minZ = 255, maxZ = 0;
             var stepSize = blockSize - 1;
             var height = srcImg.naturalHeight;
             var width = srcImg.naturalWidth;
@@ -36,15 +37,23 @@ var ImgHelper = {
 
                     var v0 = imgContext.getImageData(startX, startY, 1, 1).data;
                     v0 = (v0[0] + v0[1] + v0[2]) / 3;
+                    minZ = Math.min(v0, minZ);
+                    maxZ = Math.max(v0, maxZ);
 
                     var v1 = imgContext.getImageData(endX, startY, 1, 1).data;
                     v1 = (v1[0] + v1[1] + v1[2]) / 3;
+                    minZ = Math.min(v1, minZ);
+                    maxZ = Math.max(v1, maxZ);
 
                     var v2 = imgContext.getImageData(startX, endY, 1, 1).data;
                     v2 = (v2[0] + v2[1] + v2[2]) / 3;
+                    minZ = Math.min(v2, minZ);
+                    maxZ = Math.max(v2, maxZ);
 
                     var v3 = imgContext.getImageData(endX, endY, 1, 1).data;
                     v3 = (v3[0] + v3[1] + v3[2]) / 3;
+                    minZ = Math.min(v3, minZ);
+                    maxZ = Math.max(v3, maxZ);
 
                     points = [
                         [startX, startY, v0],
@@ -63,10 +72,14 @@ var ImgHelper = {
                     }
                 }
             }
-            return mesh;
+            return [mesh, minZ, maxZ];
         }
 
-        this.img_mesh =  createMeshFromImage();
+        var res =  createMeshFromImage();
+        this.img_mesh = res[0];
+        this.minZ = res[1];
+        this.maxZ = res[2];
+
         return this.img_mesh;
     },
     img_size: [],
@@ -86,5 +99,7 @@ var ImgHelper = {
         var size = this.getImageSize();
         this.aspect_ratio = size[0] / size[1];
         return this.aspect_ratio;
-    }
+    },
+    minZ: 255,
+    maxZ: 0
 };

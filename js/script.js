@@ -102,6 +102,7 @@ function setupShaderAttributes() {
 
 
     shaderProgram.imgSizeUnif = gl.getUniformLocation(shaderProgram, 'imgSize');
+    shaderProgram.minMaxZUnif = gl.getUniformLocation(shaderProgram, 'minMaxZ');
 
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
 }
@@ -115,7 +116,9 @@ function draw() {
     gl.vertexAttribPointer(shaderProgram.positionAttr, imgBuffer.positionBuffer.itemSize, 
         gl.FLOAT, false, 0, 0);
 
-    gl.uniform1fv(shaderProgram.imgSizeUnif, new Float32Array(ImgHelper.getImageSize()));
+    gl.uniform2fv(shaderProgram.imgSizeUnif, new Float32Array(ImgHelper.getImageSize()));
+    console.log([ImgHelper.minZ, ImgHelper.maxZ]);
+    gl.uniform2fv(shaderProgram.minMaxZUnif, new Float32Array([ImgHelper.minZ, ImgHelper.maxZ]));
 
     gl.drawArrays(gl.TRIANGLES, 0, imgBuffer.positionBuffer.numItems);
 }
