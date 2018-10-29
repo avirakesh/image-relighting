@@ -5,6 +5,6 @@ var fs_src = `
     varying vec3 fColor;
 
     void main() {
-        gl_FragColor = vec4(fColor, 1.0);
+        gl_FragColor = vec4(fPos.z, fPos.z, fPos.z, 1.0);
     }
 `;
