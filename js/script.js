@@ -2,16 +2,19 @@ var canvas;
 var m4;
 var v3;
 var gl;
-var aspect_ratio;
 
 var shaderProgram;
+var mesh = [];
+
+var imgBuffer = {};
 
 window.onload = function() {
     if (!init()) {
         return;
     }
-
-    var mesh = getMesh(5);
+    mesh = new Float32Array(ImgHelper.getMesh(5));
+    setupShaderAttributes();
+    draw();
 };
 
 function init() {
@@ -30,12 +33,23 @@ function init() {
     return true;
 }
 
-
 function setCanvasSize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    aspect_ratio = canvas.width / canvas.height;
+    var aspectRatio = ImgHelper.getAspectRatio();
+    console.log(aspectRatio);
+    var m_width = window.innerWidth;
+    var m_height = m_width / aspectRatio;
+
+    if(m_height > window.innerHeight) {
+        m_height = window.innerHeight;
+        m_width = m_height * aspectRatio;
+    }
+
+    canvas.width = m_width;
+    canvas.height = m_height;
+
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 }
 
@@ -72,4 +86,36 @@ function setupShaders() {
     }
     gl.useProgram(shaderProgram);
     return true;
+}
+
+function setupShaderAttributes() {
+    shaderProgram.positionAttr = gl.getAttribLocation(shaderProgram, 'vPos');
+    gl.enableVertexAttribArray(shaderProgram.positionAttr);
+
+    imgBuffer.positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, imgBuffer.positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, mesh, gl.STATIC_DRAW);
+    imgBuffer.positionBuffer.itemSize = 3;
+    imgBuffer.positionBuffer.numItems  = mesh.length / imgBuffer.positionBuffer.itemSize;
+
+    // add normal here as well
+
+
+    shaderProgram.imgSizeUnif = gl.getUniformLocation(shaderProgram, 'imgSize');
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+}
+
+function draw() {
+    gl.clearColor(0, 0, 0, 1);
+    gl.enable(gl.DEPTH_TEST);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, imgBuffer.positionBuffer);
+    gl.vertexAttribPointer(shaderProgram.positionAttr, imgBuffer.positionBuffer.itemSize, 
+        gl.FLOAT, false, 0, 0);
+
+    gl.uniform1fv(shaderProgram.imgSizeUnif, new Float32Array(ImgHelper.getImageSize()));
+
+    gl.drawArrays(gl.TRIANGLES, 0, imgBuffer.positionBuffer.numItems);
 }
