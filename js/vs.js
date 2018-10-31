@@ -10,8 +10,8 @@ var vs_src = `
     varying vec3 fColor;
 
     void main() {
-        float xDiv = 1920.0 / 2.0;
-        float yDiv = 1080.0 / 2.0;
+        float xDiv = imgSize.x / 2.0;
+        float yDiv = imgSize.y / 2.0;
 
         vec3 pos;
         pos.x = (vPos.x / xDiv) - 1.0;
