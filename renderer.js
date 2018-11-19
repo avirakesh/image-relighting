@@ -1,6 +1,6 @@
 
 function drawScene(gl, programInfo, buffers, deltaTime) {
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing
     gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
@@ -8,14 +8,15 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
     // Clear the canvas before we start drawing on it.
   
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  
+    
+    
     // Create a perspective matrix, a special matrix that is
     // used to simulate the distortion of perspective in a camera.
     // Our field of view is 45 degrees, with a width/height
     // ratio that matches the display size of the canvas
     // and we only want to see objects between 0.1 units
     // and 100 units away from the camera.
-  
+
     const fieldOfView = 45 * Math.PI / 180;   // in radians
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const zNear = 0.1;
@@ -108,10 +109,12 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         modelViewMatrix);
   
     {
+      gl.getExtension('OES_element_index_uint');
       //const vertexCount = 30;
-      const type = gl.UNSIGNED_SHORT;
+      const type = gl.UNSIGNED_INT;
       const offset = 0;
       gl.drawElements(gl.TRIANGLES, buffers.vertexCount, type, offset);
+      //gl.drawArrays(gl.POINTS, 0, buffers.vertexCount)
     }
   
     // Update the rotation for the next draw

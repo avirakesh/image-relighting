@@ -1,15 +1,16 @@
+
+
 function initBuffers(gl) {
-  
-  var imgDepth = document.getElementById("imgDepth")
-  var imgColor = document.getElementById("imgColor")
-  
   var p = new Promise(resolve => {
+    var imgDepth = document.getElementById("imgDepth")
+    var imgColor = document.getElementById("imgColor")
+
     var bufferCanvas=document.getElementById("bufferCanvas");
     bufferCanvas.width = imgDepth.width;
     bufferCanvas.height = imgDepth.height;
     console.log(imgDepth.width, imgDepth.height);
     bufferCanvas.getContext("2d").drawImage(imgDepth, 0, 0, imgDepth.width, imgDepth.height);
-
+    gl.flush()
     var positionBuffer = assignPositions(gl, bufferCanvas);
     var indexResult = assignElement(gl, bufferCanvas);
 
@@ -17,6 +18,7 @@ function initBuffers(gl) {
     bufferColorCanvas.width = imgColor.width
     bufferColorCanvas.height = imgColor.height
     bufferColorCanvas.getContext("2d").drawImage(imgColor, 0, 0, imgDepth.width, imgDepth.height)
+    gl.flush()
     var colorBuffer = assignColors(gl, bufferColorCanvas);
     // load image from html and draw that on a hidden canvas
     // so that pixel information could be acquired using canvas
@@ -33,9 +35,9 @@ function initBuffers(gl) {
 
 function assignPositions(gl, bufferCanvas) {
   
-  const xOffset = bufferCanvas.width / 2;
-  const yOffset = bufferCanvas.height / 2;
-  const scale = Math.max(bufferCanvas.width, bufferCanvas.height)/4;
+  const xOffset = bufferCanvas.width / 2 * 1.1; // 1.1 move whole picture to left horizontally relative to center 
+  const yOffset = bufferCanvas.height / 2 * 1.1; // 1.1 move whole picture to top horizontally relative to center
+  const scale = Math.max(bufferCanvas.width, bufferCanvas.height)/3.2;
   console.log('scale ', scale)
   // Select the positionBuffer as the one to apply buffer
   // operations to from here out.
@@ -64,11 +66,11 @@ function assignPositions(gl, bufferCanvas) {
       x = 0;
     }
     if (y === height) {
-      break; // ???
+      //break; // ???
     }
   }
-  console.log('width: ', x)
-  console.log('height: ', y)
+  console.log('assign positions width: ', x)
+  console.log('assign positions height: ', y)
   // console.log('positions\n', positions)
 
   // Now pass the list of positions into WebGL to build the
@@ -88,7 +90,8 @@ function assignColors(gl, bufferCanvas) {
   var data = bufferCanvas.getContext('2d').getImageData(0, 0, width, height).data;
   var colors = [];
   for (var i = 0; i < data.length; i++) {
-    colors.push(data[i] / 255);
+    colors.push(data[i]/255);
+    //colors.push(0)
   }
   // console.log("color: ", width, height, colors.length);
 
@@ -102,31 +105,29 @@ function assignElement(gl, bufferCanvas) {
   // This array defines each face as two triangles, using the
   // indices into the vertex array to specify each triangle's
   // position.
-  var width = bufferCanvas.width - 1;
-  var height = bufferCanvas.height - 1;
+  var width = bufferCanvas.width;
+  var width2 = width - 1;
+  var height = bufferCanvas.height - 1; 
   console.log(width, height);
-  // var len = bufferCanvas.getContext('2d').getImageData(0, 0, width, height).data.length / 4;
   var indices = [];
-  for (i = 0; i < height; i ++) {
-    for (j = 0; j < width; j ++) {
-      if (j + 1 === width) continue;
-      var index = i * height + j;
+  for (var i = 0; i < height; i ++) {
+    for (var j = 0; j < width2; j ++) {
+      var index = i * width + j;
+      //console.log(index)
       indices.push(index)
-      indices.push(index + width)
       indices.push(index + width + 1);
+      indices.push(index + width)
       indices.push(index);
       indices.push(index + width + 1);
       indices.push(index + 1);
     }
   }
-  
-  var vertexCount = indices.length;
+  var vertexCount = indices.length
   console.log('number of vertex: ', vertexCount)
   // Now send the element array to GL
   const indexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
-      new Uint16Array(indices), gl.STATIC_DRAW);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(indices), gl.STATIC_DRAW);
   return {
     indexBuffer, vertexCount
   };

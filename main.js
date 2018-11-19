@@ -1,6 +1,7 @@
 
 var cubeRotation = 0.0;
 var isRotate = 1;
+var rotate_right = 1;
 const numComponents = 3;
 
 main();
@@ -23,7 +24,7 @@ function main() {
         alert("Unable to initialize WebGL. Your browser or machine may not support it.");
         return;
     }
-
+    
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
     const programInfo = {
       program: shaderProgram,
@@ -40,30 +41,30 @@ function main() {
     var then = 0;
     //const buffers = initBuffers(gl);
     Promise.all([
-      //load.img("/images/bird0-depth.jpg", "imgDepth"),              // not working
-      //load.img("/images/bird0-alternative.jpg", "imgColor"),        // not working
-      //load.img("/images/bird0-depth-small.jpg", "imgDepth"),        //not working
-      //load.img("/images/bird0-alternative-small.jpg", "imgColor"),  //not working
-      //load.img("/images/flower1-depth.jpg", "imgDepth"),            // not working 
-      //load.img("/images/flower1-alternative.jpg", "imgColor"),      // not working
-      //load.img("/images/flower1-depth-small.jpg", "imgDepth"),      // kind of working, lossing many pixels
-      //load.img("/images/flower1-alternative-small.jpg", "imgColor"),// kind of working, lossing many pixels
-      //load.img("/images/Shelf-depthmap.jpg", "imgDepth"),           // not working
-      //load.img("/images/Shelf-alternative.jpg", "imgColor"),        // not working
-      //load.img("/images/Shelf-depthmap-small.jpg", "imgDepth"),     // kind of working
-      //load.img("/images/Shelf-alternative-small.jpg", "imgColor"),  // kind of working
-      //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),          // not working
-      //load.img("/images/Tunnel-alternative.jpg", "imgColor"),       // not working
-      //load.img("/images/Tunnel-depthmap-small.jpg", "imgDepth"),    // kind of working
-      //load.img("/images/Tunnel-alternative-small.jpg", "imgColor"), // kind of working
-      //load.img("/images/finalzdepth.png", "imgDepth"),              // not working
-      //load.img("/images/finalzdepth.png", "imgColor"),              // not working
-      //load.img("/images/finalzdepthsmall.png", "imgDepth"),         // not working
-      //load.img("/images/finalzdepthsmall.png", "imgColor"),         // not working
+      //load.img("/images/bird0-depth.jpg", "imgDepth"),              // working
+      //load.img("/images/bird0-alternative.jpg", "imgColor"),        // working
+      //load.img("/images/bird0-depth-small.jpg", "imgDepth"),        // working
+      //load.img("/images/bird0-alternative-small.jpg", "imgColor"),  // working
+      //load.img("/images/flower1-depth.jpg", "imgDepth"),            // working 
+      //load.img("/images/flower1-alternative.jpg", "imgColor"),      // working
+      //load.img("/images/flower1-depth-small.jpg", "imgDepth"),      // working
+      //load.img("/images/flower1-alternative-small.jpg", "imgColor"),// working
+      //load.img("/images/Shelf-depthmap.jpg", "imgDepth"),           // working
+      //load.img("/images/Shelf-alternative.jpg", "imgColor"),        // working
+      //load.img("/images/Shelf-depthmap-small.jpg", "imgDepth"),     // working
+      //load.img("/images/Shelf-alternative-small.jpg", "imgColor"),  // working
+      //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),          // working
+      //load.img("/images/Tunnel-alternative.jpg", "imgColor"),       // working
+      //load.img("/images/Tunnel-depthmap-small.jpg", "imgDepth"),    // working
+      //load.img("/images/Tunnel-alternative-small.jpg", "imgColor"), // working
+      load.img("/images/finalzdepth.png", "imgDepth"),              // working
+      load.img("/images/finalzdepth.png", "imgColor"),              // working
+      //load.img("/images/finalzdepthsmall.png", "imgDepth"),         // working
+      //load.img("/images/finalzdepthsmall.png", "imgColor"),         // working
       //load.img("/images/test.jpg", "imgDepth"),                     // working
       //load.img("/images/test.jpg", "imgColor"),                     // working
-      load.img("/images/testsmall.png", "imgDepth"),                // working
-      load.img("/images/testsmallcolor.png", "imgColor"),           // working
+      //load.img("/images/testsmall.png", "imgDepth"),                // working
+      //load.img("/images/testsmallcolor.png", "imgColor"),           // working
     ]).then(() => {
       initBuffers(gl).then(buffers => {
         console.log(buffers)
@@ -71,6 +72,9 @@ function main() {
         function render(now) {
           now *= 0.001;  // convert to seconds
           var deltaTime = now - then;
+          if (!rotate_right) {
+            deltaTime = -deltaTime;
+          } 
           if (!isRotate) {
             deltaTime = 0;
           }
@@ -137,11 +141,16 @@ function loadShader(gl, type, source) {
   return shader;
 }
 
-function rotateModel() {
-  if (isRotate) {
+function rotateModel(right) {
+  if (isRotate && right === rotate_right) {
     isRotate = 0;
   } else {
     isRotate = 1;
+  }
+  if (right) {
+    rotate_right = 1;
+  } else {
+    rotate_right = 0;
   }
 }
 
