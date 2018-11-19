@@ -31,36 +31,40 @@ function main() {
       attribLocations: {
         vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
         vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
+        vertexNormal: gl.getAttribLocation(shaderProgram, 'aVertexNormal'),
       },
       uniformLocations: {
         projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
         modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+        normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
+        uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
       },
     };
-
+    
     var then = 0;
     //const buffers = initBuffers(gl);
     Promise.all([
-      //load.img("/images/bird0-depth.jpg", "imgDepth"),              // working
-      //load.img("/images/bird0-alternative.jpg", "imgColor"),        // working
       //load.img("/images/bird0-depth-small.jpg", "imgDepth"),        // working
       //load.img("/images/bird0-alternative-small.jpg", "imgColor"),  // working
-      //load.img("/images/flower1-depth.jpg", "imgDepth"),            // working 
-      //load.img("/images/flower1-alternative.jpg", "imgColor"),      // working
       //load.img("/images/flower1-depth-small.jpg", "imgDepth"),      // working
       //load.img("/images/flower1-alternative-small.jpg", "imgColor"),// working
-      //load.img("/images/Shelf-depthmap.jpg", "imgDepth"),           // working
-      //load.img("/images/Shelf-alternative.jpg", "imgColor"),        // working
       //load.img("/images/Shelf-depthmap-small.jpg", "imgDepth"),     // working
       //load.img("/images/Shelf-alternative-small.jpg", "imgColor"),  // working
-      //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),          // working
-      //load.img("/images/Tunnel-alternative.jpg", "imgColor"),       // working
       //load.img("/images/Tunnel-depthmap-small.jpg", "imgDepth"),    // working
       //load.img("/images/Tunnel-alternative-small.jpg", "imgColor"), // working
-      load.img("/images/finalzdepth.png", "imgDepth"),              // working
-      load.img("/images/finalzdepth.png", "imgColor"),              // working
       //load.img("/images/finalzdepthsmall.png", "imgDepth"),         // working
       //load.img("/images/finalzdepthsmall.png", "imgColor"),         // working
+      
+      //load.img("/images/bird0-depth.jpg", "imgDepth"),              // working
+      //load.img("/images/bird0-alternative.jpg", "imgColor"),        // working
+      //load.img("/images/flower1-depth.jpg", "imgDepth"),            // working 
+      //load.img("/images/flower1-alternative.jpg", "imgColor"),      // working
+      //load.img("/images/Shelf-depthmap.jpg", "imgDepth"),           // working
+      //load.img("/images/Shelf-alternative.jpg", "imgColor"),        // working
+      //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),          // working
+      //load.img("/images/Tunnel-alternative.jpg", "imgColor"),       // working
+      load.img("/images/finalzdepth.png", "imgDepth"),              // working
+      load.img("/images/finalzdepth.png", "imgColor"),              // working
       //load.img("/images/test.jpg", "imgDepth"),                     // working
       //load.img("/images/test.jpg", "imgColor"),                     // working
       //load.img("/images/testsmall.png", "imgDepth"),                // working

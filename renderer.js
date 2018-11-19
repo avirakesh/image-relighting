@@ -1,6 +1,6 @@
 
 function drawScene(gl, programInfo, buffers, deltaTime) {
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);  // Clear to black, fully opaque
+    gl.clearColor(.5, .5, .5, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing
     gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
@@ -50,7 +50,11 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
                 cubeRotation * .7,// amount to rotate in radians
                 [0, 1, 0]);       // axis to rotate around (X)
   
-    // Tell WebGL how to pull out the positions from the position
+    const normalMatrix = mat4.create()
+    mat4.invert(normalMatrix, modelViewMatrix)
+    mat4.transpose(normalMatrix, normalMatrix)
+    
+                // Tell WebGL how to pull out the positions from the position
     // buffer into the vertexPosition attribute
     {
       const numComponents = 3;
@@ -90,6 +94,26 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
           programInfo.attribLocations.vertexColor);
     }
   
+    // Tell WebGL how to pull out the normals from
+    // the normal buffer into the vertexNormal attribute.
+    {
+        const numComponents = 3;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normal);
+        gl.vertexAttribPointer(
+            programInfo.attribLocations.vertexNormal,
+            numComponents,
+            type,
+            normalize,
+            stride,
+            offset);
+        gl.enableVertexAttribArray(
+            programInfo.attribLocations.vertexNormal);
+    }
+
     // Tell WebGL which indices to use to index the vertices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
   
@@ -107,7 +131,11 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         programInfo.uniformLocations.modelViewMatrix,
         false,
         modelViewMatrix);
-  
+    gl.uniformMatrix4fv(
+      programInfo.uniformLocations.normalMatrix,
+      false,
+      normalMatrix);
+      
     {
       gl.getExtension('OES_element_index_uint');
       //const vertexCount = 30;

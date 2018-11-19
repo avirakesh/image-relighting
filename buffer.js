@@ -25,6 +25,7 @@ function initBuffers(gl) {
     
     resolve({
       position: positionBuffer,
+      normal: positionBuffer,
       color: colorBuffer,
       indices: indexResult.indexBuffer,
       vertexCount: indexResult.vertexCount
@@ -131,4 +132,9 @@ function assignElement(gl, bufferCanvas) {
   return {
     indexBuffer, vertexCount
   };
+}
+
+function assignNormals(gl, bufferCanvas) {
+  // TODO
+  
 }
