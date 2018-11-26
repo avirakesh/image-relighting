@@ -16,7 +16,7 @@ var vs_src = `
         vec3 pos;
         pos.x = (vPos.x / xDiv) - 1.0;
         pos.y = (-vPos.y / yDiv) + 1.0;
-        pos.z = ((vPos.z - minMaxZ.x) / (minMaxZ.y - minMaxZ.x));
+        pos.z = (vPos.z - minMaxZ.x) / (minMaxZ.y - minMaxZ.x + 1.0);
 
         fPos  = pos;
         fColor = pos;
