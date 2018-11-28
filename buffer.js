@@ -60,7 +60,7 @@ function assignPositions(gl, bufferCanvas) {
     var depth = 255 - (r + g + b + a) / 4;
     positions.push((x - xOffset) / scale);
     positions.push((-y + yOffset) / scale);
-    positions.push(depth / 100);
+    positions.push(depth / 170);
     x += 1;
     if (x === width) {
       y += 1;

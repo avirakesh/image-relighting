@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <header>
+        <link rel="stylesheet" href="css/scrollbar.css" crossorigin="anonymous"></link>
         <script src="loader.js"></script>
         <script src="gl-matrix.js"></script>
         <script src="vShader.js"></script>
@@ -17,12 +18,49 @@
         <p>
             Hello World
         </p>
-        <p>original picture</p>
-        <img src="/images/testsmall.png">
-        <img src="/images/testsmallcolor.png">
+        
         <button onclick="rotateModel(0)"> rotate left</button>
         <button onclick="rotateModel(1)"> rotate right</button>
         <p>3d conversion based on intensity</p>
         <canvas id="glCanvas" width="640" height="560">canvas</canvas>
+        <div></div>
+        
+        <div>
+            <div class="slidecontainer" onmousemove="mutateLight('lightR')">
+                <span>light red</span>
+                <input type="range" min="-255" max="255" value="255" class="slider" id="lightR">
+            </div>
+        </div>
+        <div>
+            <div class="slidecontainer" onmousemove="mutateLight('lightG')">
+                <span>light green</span>
+                <input type="range" min="-255" max="255" value="255" class="slider" id="lightG">
+            </div>
+        </div>
+        <div>
+            <div class="slidecontainer" onmousemove="mutateLight('lightB')">
+                <span>light blue</span>
+                <input type="range" min="-255" max="255" value="255" class="slider" id="lightB">
+            </div>
+        </div>
+        <div>
+            <div class="slidecontainer" onmousemove="mutateLight('lightX')">
+                <span>light X</span>
+                <input type="range" min="-255" max="255" value="128" class="slider" id="lightX">
+            </div>
+        </div>
+        <div>
+            <div class="slidecontainer" onmousemove="mutateLight('lightY')">
+                <span>light Y</span>
+                <input type="range" min="-255" max="255" value="77" class="slider" id="lightY">
+            </div>
+        </div>
+        <div>
+            <div class="slidecontainer" onmousemove="mutateLight('lightZ')">
+                <span>light Z</span>
+                <input type="range" min="-255" max="255" value="178" class="slider" id="lightZ">
+            </div>
+        </div>
+        
     </body>
 </html>

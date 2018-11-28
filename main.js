@@ -1,9 +1,17 @@
-
+const fixRotation = 0;
 var cubeRotation = 0.0;
 var isRotate = 1;
 var rotate_right = 1;
 const numComponents = 3;
-
+var stride = 0.05;
+var programVars = {
+    lightR: 1,
+    lightG: 1,
+    lightB: 1,
+    lightX: 0.5,
+    lightY: 0.3,
+    lightZ: 0.7
+}
 main();
 
 //
@@ -38,33 +46,27 @@ function main() {
         modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
         normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
         uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
+        lightR: gl.getUniformLocation(shaderProgram, 'lightR'),
+        lightG: gl.getUniformLocation(shaderProgram, 'lightG'),
+        lightB: gl.getUniformLocation(shaderProgram, 'lightB'),
+        lightX: gl.getUniformLocation(shaderProgram, 'lightX'),
+        lightY: gl.getUniformLocation(shaderProgram, 'lightY'),
+        lightZ: gl.getUniformLocation(shaderProgram, 'lightZ'),
       },
     };
     
     var then = 0;
-    //const buffers = initBuffers(gl);
     Promise.all([
-      //load.img("/images/bird0-depth-small.jpg", "imgDepth"),        // working
-      //load.img("/images/bird0-alternative-small.jpg", "imgColor"),  // working
-      //load.img("/images/flower1-depth-small.jpg", "imgDepth"),      // working
-      //load.img("/images/flower1-alternative-small.jpg", "imgColor"),// working
-      //load.img("/images/Shelf-depthmap-small.jpg", "imgDepth"),     // working
-      //load.img("/images/Shelf-alternative-small.jpg", "imgColor"),  // working
-      //load.img("/images/Tunnel-depthmap-small.jpg", "imgDepth"),    // working
-      //load.img("/images/Tunnel-alternative-small.jpg", "imgColor"), // working
-      //load.img("/images/finalzdepthsmall.png", "imgDepth"),         // working
-      //load.img("/images/finalzdepthsmall.png", "imgColor"),         // working
-      
       //load.img("/images/bird0-depth.jpg", "imgDepth"),              // working
       //load.img("/images/bird0-alternative.jpg", "imgColor"),        // working
       //load.img("/images/flower1-depth.jpg", "imgDepth"),            // working 
       //load.img("/images/flower1-alternative.jpg", "imgColor"),      // working
       //load.img("/images/Shelf-depthmap.jpg", "imgDepth"),           // working
       //load.img("/images/Shelf-alternative.jpg", "imgColor"),        // working
-      //load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),          // working
-      //load.img("/images/Tunnel-alternative.jpg", "imgColor"),       // working
-      load.img("/images/finalzdepth.png", "imgDepth"),              // working
-      load.img("/images/finalzdepth.png", "imgColor"),              // working
+      load.img("/images/Tunnel-depthmap.jpg", "imgDepth"),          // working
+      load.img("/images/Tunnel-alternative.jpg", "imgColor"),       // working
+      //load.img("/images/finalzdepth.png", "imgDepth"),              // working
+      //load.img("/images/finalzdepth.png", "imgColor"),              // working
       //load.img("/images/test.jpg", "imgDepth"),                     // working
       //load.img("/images/test.jpg", "imgColor"),                     // working
       //load.img("/images/testsmall.png", "imgDepth"),                // working
@@ -82,9 +84,12 @@ function main() {
           if (!isRotate) {
             deltaTime = 0;
           }
+          if (fixRotation) {
+            deltaTime = 0;
+          }
           then = now;
     
-          drawScene(gl, programInfo, buffers, deltaTime);
+          drawScene(gl, programInfo, buffers, deltaTime, programVars);
     
           requestAnimationFrame(render);
         }
@@ -103,7 +108,6 @@ function initShaderProgram(gl, vsSource, fsSource) {
   const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
 
   // Create the shader program
-
   const shaderProgram = gl.createProgram();
   gl.attachShader(shaderProgram, vertexShader);
   gl.attachShader(shaderProgram, fragmentShader);
@@ -127,21 +131,15 @@ function loadShader(gl, type, source) {
   const shader = gl.createShader(type);
 
   // Send the source to the shader object
-
   gl.shaderSource(shader, source);
-
   // Compile the shader program
-
   gl.compileShader(shader);
-
   // See if it compiled successfully
-
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
     gl.deleteShader(shader);
     return null;
   }
-
   return shader;
 }
 
@@ -156,5 +154,10 @@ function rotateModel(right) {
   } else {
     rotate_right = 0;
   }
+}
+
+function mutateLight(id) {
+    console.log('hello')
+    programVars[id] = document.getElementById(id).value / 255
 }
 

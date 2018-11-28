@@ -1,5 +1,5 @@
 
-function drawScene(gl, programInfo, buffers, deltaTime) {
+function drawScene(gl, programInfo, buffers, deltaTime, programVars) {
     gl.clearColor(.5, .5, .5, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -135,6 +135,12 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
       programInfo.uniformLocations.normalMatrix,
       false,
       normalMatrix);
+    gl.uniform1f(programInfo.uniformLocations.lightR, programVars.lightR);
+    gl.uniform1f(programInfo.uniformLocations.lightG, programVars.lightG);
+    gl.uniform1f(programInfo.uniformLocations.lightB, programVars.lightB);
+    gl.uniform1f(programInfo.uniformLocations.lightX, programVars.lightX);
+    gl.uniform1f(programInfo.uniformLocations.lightY, programVars.lightY);
+    gl.uniform1f(programInfo.uniformLocations.lightZ, programVars.lightZ);
       
     {
       gl.getExtension('OES_element_index_uint');
