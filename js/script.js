@@ -5,6 +5,7 @@ var gl;
 
 var shaderProgram;
 var mesh = [];
+var normals = [];
 
 var imgBuffer = {};
 
@@ -13,6 +14,7 @@ window.onload = function() {
         return;
     }
     mesh = new Float32Array(ImgHelper.getMesh(5));
+    normals = new Float32Array(ImgHelper.getNormals());
     setupShaderAttributes();
     draw();
 };
@@ -92,6 +94,9 @@ function setupShaderAttributes() {
     shaderProgram.positionAttr = gl.getAttribLocation(shaderProgram, 'vPos');
     gl.enableVertexAttribArray(shaderProgram.positionAttr);
 
+    shaderProgram.normalAttr = gl.getAttribLocation(shaderProgram, 'normal');
+    gl.enableVertexAttribArray(shaderProgram.normalAttr);
+
     imgBuffer.positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, imgBuffer.positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, mesh, gl.STATIC_DRAW);
@@ -99,7 +104,11 @@ function setupShaderAttributes() {
     imgBuffer.positionBuffer.numItems  = mesh.length / imgBuffer.positionBuffer.itemSize;
 
     // add normal here as well
-
+    imgBuffer.normalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, imgBuffer.normalBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW);
+    imgBuffer.normalBuffer.itemSize = 3;
+    imgBuffer.normalBuffer.numItems = normals.length / imgBuffer.normalBuffer.itemSize;
 
     shaderProgram.imgSizeUnif = gl.getUniformLocation(shaderProgram, 'imgSize');
     shaderProgram.minMaxZUnif = gl.getUniformLocation(shaderProgram, 'minMaxZ');
@@ -114,6 +123,10 @@ function draw() {
 
     gl.bindBuffer(gl.ARRAY_BUFFER, imgBuffer.positionBuffer);
     gl.vertexAttribPointer(shaderProgram.positionAttr, imgBuffer.positionBuffer.itemSize, 
+        gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, imgBuffer.normalBuffer);
+    gl.vertexAttribPointer(shaderProgram.normalAttr, imgBuffer.normalBuffer.itemSize, 
         gl.FLOAT, false, 0, 0);
 
     gl.uniform2fv(shaderProgram.imgSizeUnif, new Float32Array(ImgHelper.getImageSize()));

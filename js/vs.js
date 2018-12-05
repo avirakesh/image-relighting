@@ -5,9 +5,10 @@ var vs_src = `
     uniform vec2 minMaxZ;
     
     attribute vec3 vPos;
+    attribute vec3 normal;
     
     varying vec3 fPos;
-    varying vec3 fColor;
+    varying vec3 fNormal;
 
     void main() {
         float xDiv = imgSize.x / 2.0;
@@ -19,7 +20,10 @@ var vs_src = `
         pos.z = (vPos.z - minMaxZ.x) / (minMaxZ.y - minMaxZ.x + 1.0);
 
         fPos  = pos;
-        fColor = pos;
+
+        vec3 correctedNormal = normalize(normal);
+        correctedNormal = vec3(correctedNormal.x, -correctedNormal.y, -correctedNormal.z);
+        fNormal = correctedNormal;
 
         gl_Position = vec4(pos, 1.0);
     }

@@ -4,21 +4,26 @@ var ImgHelper = {
         if (this.img_mesh.length != 0) {
             return this.img_mesh;
         }
+
+        blockSize  = blockSize || 2
+        console.log(blockSize);
+        
         var srcImg = document.getElementById("src-img");
 
         var imgCanvas = document.createElement("canvas");
         var imgContext = imgCanvas.getContext("2d");
 
-        imgCanvas.width = srcImg.naturalWidth;
-        imgCanvas.height = srcImg.naturalHeight;
+        var height = srcImg.naturalHeight;
+        var width = srcImg.naturalWidth;
+        imgCanvas.width = width;
+        imgCanvas.height = height;
+        
 
         imgContext.drawImage(srcImg, 0, 0);
 
         function createMeshFromImage() {
             var minZ = 255, maxZ = 0;
             var stepSize = blockSize - 1;
-            var height = srcImg.naturalHeight;
-            var width = srcImg.naturalWidth;
             var xSteps = Math.floor(width / stepSize);
             var ySteps = Math.floor(height / stepSize);
 
@@ -27,6 +32,7 @@ var ImgHelper = {
 
             var idx = 0;
             var mesh = [];
+            var normals = []
             for (var i = 0; i < ySteps; i++) {
                 for (var j = 0; j < xSteps; j++) {
                     var startX = j * stepSize;
@@ -62,23 +68,87 @@ var ImgHelper = {
                         [endX, endY, v3]
                     ]
 
+                    var ptNormals = getNormalsForPoints(points);
+                    // console.log(normals);
+
                     for (var m = 0; m < 2; m++) {
                         for (var n = 0; n < 3; n++) {
                             for (var o = 0; o < 3; o++) {
                                 mesh[idx] = points[m + n][o];
+                                normals[idx] = ptNormals[m + n][o];
                                 idx++;
                             }
                         }
                     }
                 }
             }
-            return [mesh, minZ, maxZ];
+            return [mesh, minZ, maxZ, normals];
+        }
+
+        function getNormalsForPoints(points) {
+            var normals = [];
+            for (var i = 0; i < points.length; i++) {
+                pt = points[i];
+                var x = pt[0];
+                var y = pt[1];
+
+                var s = 2;
+                var lt = [Math.max(0, x - s), Math.max(0, y - s)];
+                var ltVal = imgContext.getImageData(lt[0], lt[1], 1, 1).data;
+                lt[2] = [( ltVal[0] + ltVal[1] + ltVal[2] ) / 3];
+
+                var rt = [Math.min(width - 1, x + s), Math.max(0, y - s)];
+                var rtVal = imgContext.getImageData(rt[0], rt[1], 1, 1).data;
+                rt[2] = ( rtVal[0] + rtVal[1] + rtVal[2] ) / 3;
+
+                var lb = [Math.max(0, x - s), Math.min(height - 1, y + s)];
+                var lbVal = imgContext.getImageData(lb[0], lb[1], 1, 1).data;
+                lb[2] = ( lbVal[0] + lbVal[1] + lbVal[2] ) / 3;
+
+                var rb = [Math.min(width - 1, x + s), Math.min(height - 1, y + s)];
+                var rbVal = imgContext.getImageData(rb[0], rb[1], 1, 1).data;
+                rb[2] = ( rbVal[0] + rbVal[1] + rbVal[2] ) / 3;
+
+                var rtv = v3.subtract(rt, pt);
+                var ltv = v3.subtract(lt, pt);
+                var lbv = v3.subtract(lb, pt);
+                var rbv = v3.subtract(rb, pt);
+
+                // var v1 = v3.subtract(rt, lb);
+                // var v2 = v3.subtract(lt, rb);
+
+                var normal = [
+                    v3.cross(rtv, ltv), 
+                    v3.cross(ltv, lbv), 
+                    v3.cross(lbv, rbv),
+                    v3.cross(rbv, rtv)
+                    // v3.cross(ltv, rtv),
+                    // v3.cross(lbv, ltv),
+                    // v3.cross(rbv, lbv),
+                    // v3.cross(rtv, rbv)
+                    // v3.cross(v2, v1)
+                ];
+
+                
+
+                normals[i] = v3.add(
+                    v3.add(
+                        v3.add(normal[0], normal[1]),
+                        normal[1]
+                    ),
+                    normal[3]
+                );
+
+                // normals[i] = normal[0];
+            }
+            return normals;
         }
 
         var res =  createMeshFromImage();
         this.img_mesh = res[0];
         this.minZ = res[1];
         this.maxZ = res[2];
+        this.normals = res[3]
 
         return this.img_mesh;
     },
@@ -101,5 +171,14 @@ var ImgHelper = {
         return this.aspect_ratio;
     },
     minZ: 255,
-    maxZ: 0
+    maxZ: 0,
+
+    normals: [],
+    getNormals: function() {
+        if (this.normals.length == 0) {
+            this.getMesh(5);
+        }
+
+        return this.normals;
+    }
 };
