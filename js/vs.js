@@ -9,6 +9,7 @@ var vs_src = `
     
     varying vec3 fPos;
     varying vec3 fNormal;
+    varying vec2 texCoords;
 
     void main() {
         float xDiv = imgSize.x / 2.0;
@@ -20,6 +21,7 @@ var vs_src = `
         pos.z = (vPos.z - minMaxZ.x) / (minMaxZ.y - minMaxZ.x + 1.0);
 
         fPos  = pos;
+        texCoords = vec2((pos.x + 1.0) / 2.0, -(pos.y - 1.0) / 2.0);
 
         vec3 correctedNormal = normalize(normal);
         correctedNormal = vec3(correctedNormal.x, -correctedNormal.y, -correctedNormal.z);

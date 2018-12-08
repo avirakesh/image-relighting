@@ -4,7 +4,7 @@ body {
     overflow: hidden;
 }
 
-#src-img {
+img {
     display: none;
     visibility: hidden;
 }

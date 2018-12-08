@@ -8,7 +8,7 @@ var ImgHelper = {
         blockSize  = blockSize || 2
         console.log(blockSize);
         
-        var srcImg = document.getElementById("src-img");
+        var srcImg = document.getElementById("src-depth-img");
 
         var imgCanvas = document.createElement("canvas");
         var imgContext = imgCanvas.getContext("2d");
@@ -157,7 +157,7 @@ var ImgHelper = {
         if (this.img_size.length != 0) {
             return this.img_size;
         }
-        var srcImg = document.getElementById("src-img");
+        var srcImg = document.getElementById("src-depth-img");
         this.img_size = [srcImg.naturalWidth, srcImg.naturalHeight];
         return this.img_size;
     },

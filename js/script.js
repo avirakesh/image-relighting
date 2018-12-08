@@ -9,14 +9,22 @@ var normals = [];
 
 var imgBuffer = {};
 
+var lightPos = [0, 0, 0];
+
 window.onload = function() {
     if (!init()) {
         return;
     }
-    mesh = new Float32Array(ImgHelper.getMesh(5));
+    mesh = new Float32Array(ImgHelper.getMesh(2));
     normals = new Float32Array(ImgHelper.getNormals());
     setupShaderAttributes();
     draw();
+    var lightSlider = document.getElementById('lightSlider');
+    lightSlider.value = 0;
+    lightSlider.addEventListener('input', function() {
+        lightPos = [0, 0, lightSlider.value / 100];
+        draw();
+    });
 };
 
 function init() {
@@ -110,8 +118,17 @@ function setupShaderAttributes() {
     imgBuffer.normalBuffer.itemSize = 3;
     imgBuffer.normalBuffer.numItems = normals.length / imgBuffer.normalBuffer.itemSize;
 
+    imgBuffer.texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, imgBuffer.texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, document.getElementById('src-tex-img'));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
     shaderProgram.imgSizeUnif = gl.getUniformLocation(shaderProgram, 'imgSize');
     shaderProgram.minMaxZUnif = gl.getUniformLocation(shaderProgram, 'minMaxZ');
+    shaderProgram.lightPos = gl.getUniformLocation(shaderProgram, 'lightPos');
+    shaderProgram.texSampler = gl.getUniformLocation(shaderProgram, 'texSampler');
 
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
 }
@@ -129,9 +146,14 @@ function draw() {
     gl.vertexAttribPointer(shaderProgram.normalAttr, imgBuffer.normalBuffer.itemSize, 
         gl.FLOAT, false, 0, 0);
 
+    gl.bindTexture(gl.TEXTURE_2D, imgBuffer.texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, document.getElementById('src-tex-img'));
+
     gl.uniform2fv(shaderProgram.imgSizeUnif, new Float32Array(ImgHelper.getImageSize()));
-    console.log([ImgHelper.minZ, ImgHelper.maxZ]);
+    // console.log([ImgHelper.minZ, ImgHelper.maxZ]);
     gl.uniform2fv(shaderProgram.minMaxZUnif, new Float32Array([ImgHelper.minZ, ImgHelper.maxZ]));
+    gl.uniform3fv(shaderProgram.lightPos, new Float32Array(lightPos));
+    gl.uniform1i(shaderProgram.texSampler, 0);
 
     gl.drawArrays(gl.TRIANGLES, 0, imgBuffer.positionBuffer.numItems);
 }
