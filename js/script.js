@@ -25,12 +25,12 @@ var lightIntensitySpan;
 
 var images = {
     img: [
+        "tunnel.jpg",
         "coke.jpg",
         "room.jpg",
         "shelf.jpg",
         "bird.jpg",
         "flower.jpg",
-        "tunnel.jpg",
         "misc.jpg",
         'office.jpg',
         'kitchen.jpg'
@@ -40,6 +40,8 @@ var images = {
 };
 
 var imgIdx = 8;
+
+var canvasDrag = false;
 
 window.onload = function() {
 
@@ -92,16 +94,23 @@ function startProcessing() {
     lightIntensitySlider.addEventListener('input', sliderUpdate);
 
     canvas.addEventListener('click', function(event) {
-        var x = event.pageX - canvas.offsetLeft;
-        var y = event.pageY - canvas.offsetTop;
-
-        x = (2 * x / canvas.width) - 1;
-        y = -((2 * y / canvas.height) - 1);
-
-        xlightSlider.value = Math.round(x * 100);
-        ylightSlider.value = Math.round(y * 100);
-        sliderUpdate();
+        updateLightFromCanvas(event);
     });
+
+    canvas.addEventListener('mousedown', function(event) {
+        canvasDrag = true;
+        updateLightFromCanvas();
+    });
+
+    canvas.addEventListener('mouseup', function(event) {
+        canvasDrag = false;
+    });
+
+    canvas.addEventListener('mousemove', function(event) {
+        if (canvasDrag) {
+            updateLightFromCanvas(event);
+        }
+    })
 
     document.getElementById('loader-overlay-div').setAttribute('style', 'display: none; visibility: hidden;')
     lightPosSpan.innerHTML = '[' + lightPos[0] + ', ' + lightPos[1] + ', ' + lightPos[2] + ']';
@@ -109,6 +118,18 @@ function startProcessing() {
     draw();
 
     setupImageSelector();
+}
+
+function updateLightFromCanvas(event) {
+    var x = event.pageX - canvas.offsetLeft;
+    var y = event.pageY - canvas.offsetTop;
+
+    x = (2 * x / canvas.width) - 1;
+    y = -((2 * y / canvas.height) - 1);
+
+    xlightSlider.value = Math.round(x * 100);
+    ylightSlider.value = Math.round(y * 100);
+    sliderUpdate();
 }
 
 function sliderUpdate() {

@@ -28,17 +28,17 @@ var fs_src = `
         float lambertian = max(dot(lightDir, normal), 0.0);
         vec3 diffuse = diffuseColor * lambertian / distance;
 
-        // float specularCoeff = 0.0;
-        // if (lambertian > 0.0) {
-        //     vec3 viewDir = normalize(fPos);
-        //     vec3 halfDir = normalize(lightDir + viewDir);
+        float specularCoeff = 0.0;
+        if (lambertian > 0.0) {
+            vec3 viewDir = normalize(fPos);
+            vec3 halfDir = normalize(lightDir + viewDir);
             
-        //     float specAngle = max(dot(halfDir, normal), 0.0);
-        //     specularCoeff = pow(specAngle, 5.0);
-        // }
-        // vec3 specular = 0.5 * specularCoeff * specColor;
+            float specAngle = max(dot(halfDir, normal), 0.0);
+            specularCoeff = pow(specAngle, 1.0);
+        }
+        vec3 specular = specularCoeff * specColor / distance;
 
-        vec3 color = diffuse;
+        vec3 color = diffuse + specular;
         return color;
     }
 
