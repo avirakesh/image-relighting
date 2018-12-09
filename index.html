@@ -14,6 +14,8 @@
         <img id="src-depth-img">
         <img id="src-tex-img">
         <div class="sliders-div">
+            <u>Light Controls</u>
+            <br>
             <label for="xlightSlider">x : </label>
             <input type="range" id="xlightSlider" min="-100" max="100">
             <br>
@@ -39,7 +41,24 @@
             <br>
             <span id="light-intensity-span"></span>
             <span>&nbsp;:&nbsp;&nbsp;Light Intensity</span>
+            <br>
+            <br>
+            <br>
+            <label for="image-select"><u>Select Another Image</u></label>
+            <br>
+            <select id="image-select"></select>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="Reload" id="reload-button">
+            <br>
+            &nbsp;
         </div>
         
+        <div id="loader-overlay-div">
+                <div class="overlay-content-container">
+                    <div class="spinner"></div>
+                    <br>
+                    Creating Mesh. Please Wait!
+                </div>
+        </div>
     </body>
 </html>

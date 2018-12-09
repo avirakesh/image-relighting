@@ -42,6 +42,13 @@ var images = {
 var imgIdx = 8;
 
 window.onload = function() {
+
+    if (location.search.substr(1) == "") {
+        imgIdx = 0;
+    } else {
+        imgIdx = parseInt(location.search.substr(1))
+    }
+
     if (!init()) {
         return;
     }
@@ -96,9 +103,12 @@ function startProcessing() {
         sliderUpdate();
     });
 
+    document.getElementById('loader-overlay-div').setAttribute('style', 'display: none; visibility: hidden;')
     lightPosSpan.innerHTML = '[' + lightPos[0] + ', ' + lightPos[1] + ', ' + lightPos[2] + ']';
     lightIntensitySpan.innerHTML = lightIntensity;
     draw();
+
+    setupImageSelector();
 }
 
 function sliderUpdate() {
@@ -264,4 +274,28 @@ function draw() {
     gl.uniform1f(shaderProgram.lightIntensity, lightIntensity);
 
     gl.drawArrays(gl.TRIANGLES, 0, imgBuffer.positionBuffer.numItems);
+}
+
+function setupImageSelector() {
+    var selector = document.getElementById('image-select');
+
+    for (var i = 0; i < images.img.length; i++) {
+        var option = document.createElement('option');
+        option.text = images.img[i]; 
+        option.value = i;
+
+        if (imgIdx == i) {
+            option.selected = true;
+        }
+        
+        selector.add(option, i);
+    }
+
+    var reloadButton = document.getElementById('reload-button');
+    reloadButton.addEventListener('click', function() {
+        var selectedIdx = selector.selectedIndex;
+        var selectedOption = selector.options[selectedIdx];
+
+        window.location.href = window.location.href.split('?')[0] + '?' + selectedOption.value;
+    })
 }
