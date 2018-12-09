@@ -8,3 +8,10 @@ img {
     display: none;
     visibility: hidden;
 }
+
+.sliders-div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: end;
+}

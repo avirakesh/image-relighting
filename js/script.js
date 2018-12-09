@@ -9,23 +9,121 @@ var normals = [];
 
 var imgBuffer = {};
 
-var lightPos = [0, 0, 0];
+var lightPos = [0, 0, -1];
+var xlightSlider; 
+var ylightSlider;
+var zlightSlider;
+var lightPosSpan;
+
+var lightingCheckbox;
+var textureCheckbox;
+var textureLighting = 3;
+
+var lightIntensity = 0.4;
+var lightIntensitySlider;
+var lightIntensitySpan;
+
+var images = {
+    img: [
+        "coke.jpg",
+        "room.jpg",
+        "shelf.jpg",
+        "bird.jpg",
+        "flower.jpg",
+        "tunnel.jpg",
+        "misc.jpg",
+        'office.jpg',
+        'kitchen.jpg'
+    ],
+    texRoot: './images/texture/',
+    depthRoot: './images/depth/'
+};
+
+var imgIdx = 8;
 
 window.onload = function() {
     if (!init()) {
         return;
     }
-    mesh = new Float32Array(ImgHelper.getMesh(2));
+
+    document.getElementById('src-depth-img').src = images.depthRoot + images.img[imgIdx];
+    document.getElementById('src-tex-img').src = images.texRoot + images.img[imgIdx];
+
+    setTimeout(startProcessing, 100);
+};
+
+function startProcessing() {
+    setCanvasSize();
+    mesh = new Float32Array(ImgHelper.getMesh(5));
     normals = new Float32Array(ImgHelper.getNormals());
     setupShaderAttributes();
-    draw();
-    var lightSlider = document.getElementById('lightSlider');
-    lightSlider.value = 0;
-    lightSlider.addEventListener('input', function() {
-        lightPos = [0, 0, lightSlider.value / 100];
-        draw();
+    
+    xlightSlider = document.getElementById('xlightSlider');
+    ylightSlider = document.getElementById('ylightSlider');
+    zlightSlider = document.getElementById('zlightSlider');
+    lightPosSpan = document.getElementById('light-pos-span');
+
+    xlightSlider.value = 0;
+    xlightSlider.addEventListener('input', sliderUpdate);
+
+    ylightSlider.value = 0;
+    ylightSlider.addEventListener('input', sliderUpdate);
+
+    zlightSlider.value = -100;
+    zlightSlider.addEventListener('input', sliderUpdate);
+
+    lightingCheckbox = document.getElementById('lighting-checkbox');
+    textureCheckbox = document.getElementById('texture-checkbox');
+
+    lightingCheckbox.addEventListener('input', checkboxUpdate);
+    textureCheckbox.addEventListener('input', checkboxUpdate);
+
+    lightIntensitySlider = document.getElementById('lightIntensitySlider');
+    lightIntensitySpan = document.getElementById('light-intensity-span');
+
+    lightIntensitySlider.value = 40;
+    lightIntensitySlider.addEventListener('input', sliderUpdate);
+
+    canvas.addEventListener('click', function(event) {
+        var x = event.pageX - canvas.offsetLeft;
+        var y = event.pageY - canvas.offsetTop;
+
+        x = (2 * x / canvas.width) - 1;
+        y = -((2 * y / canvas.height) - 1);
+
+        xlightSlider.value = Math.round(x * 100);
+        ylightSlider.value = Math.round(y * 100);
+        sliderUpdate();
     });
-};
+
+    lightPosSpan.innerHTML = '[' + lightPos[0] + ', ' + lightPos[1] + ', ' + lightPos[2] + ']';
+    lightIntensitySpan.innerHTML = lightIntensity;
+    draw();
+}
+
+function sliderUpdate() {
+    lightPos = [xlightSlider.value / 100, ylightSlider.value / 100, zlightSlider.value / 100];
+    lightPosSpan.innerHTML = '[' + lightPos[0] + ', ' + lightPos[1] + ', ' + lightPos[2] + ']';
+
+    lightIntensity = lightIntensitySlider.value / 100;
+    lightIntensitySpan.innerHTML = lightIntensity;
+    draw();
+}
+
+function checkboxUpdate() {
+    textureLighting = 0;
+    if (lightingCheckbox.checked) {
+        textureLighting += 2;
+    }
+
+    if (textureCheckbox.checked) {
+        textureLighting += 1;
+    }
+
+    draw();
+}
+
+
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -33,7 +131,6 @@ function init() {
     v3 = twgl.v3;
 
     gl = canvas.getContext("webgl");
-    setCanvasSize();
 
     window.addEventListener('resize', setCanvasSize);
     if(!setupShaders()) {
@@ -44,21 +141,30 @@ function init() {
 }
 
 function setCanvasSize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    var imgSize = ImgHelper.getImageSize();
 
-    var aspectRatio = ImgHelper.getAspectRatio();
-    console.log(aspectRatio);
-    var m_width = window.innerWidth;
-    var m_height = m_width / aspectRatio;
+    if (window.innerWidth < imgSize[0] || window.innerHeight < imgSize[1]) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    if(m_height > window.innerHeight) {
-        m_height = window.innerHeight;
-        m_width = m_height * aspectRatio;
+        var aspectRatio = ImgHelper.getAspectRatio();
+        console.log(aspectRatio);
+
+
+        var m_width = window.innerWidth;
+        var m_height = m_width / aspectRatio;
+
+        if (m_height > window.innerHeight) {
+            m_height = window.innerHeight;
+            m_width = m_height * aspectRatio;
+        }
+
+        canvas.width = m_width;
+        canvas.height = m_height;
+    } else {
+        canvas.width = imgSize[0];
+        canvas.height = imgSize[1];
     }
-
-    canvas.width = m_width;
-    canvas.height = m_height;
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 }
@@ -111,7 +217,6 @@ function setupShaderAttributes() {
     imgBuffer.positionBuffer.itemSize = 3;
     imgBuffer.positionBuffer.numItems  = mesh.length / imgBuffer.positionBuffer.itemSize;
 
-    // add normal here as well
     imgBuffer.normalBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, imgBuffer.normalBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW);
@@ -129,6 +234,8 @@ function setupShaderAttributes() {
     shaderProgram.minMaxZUnif = gl.getUniformLocation(shaderProgram, 'minMaxZ');
     shaderProgram.lightPos = gl.getUniformLocation(shaderProgram, 'lightPos');
     shaderProgram.texSampler = gl.getUniformLocation(shaderProgram, 'texSampler');
+    shaderProgram.textureLighting = gl.getUniformLocation(shaderProgram, 'textureLighting');
+    shaderProgram.lightIntensity = gl.getUniformLocation(shaderProgram, 'lightIntensity');
 
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
 }
@@ -150,10 +257,11 @@ function draw() {
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, document.getElementById('src-tex-img'));
 
     gl.uniform2fv(shaderProgram.imgSizeUnif, new Float32Array(ImgHelper.getImageSize()));
-    // console.log([ImgHelper.minZ, ImgHelper.maxZ]);
     gl.uniform2fv(shaderProgram.minMaxZUnif, new Float32Array([ImgHelper.minZ, ImgHelper.maxZ]));
     gl.uniform3fv(shaderProgram.lightPos, new Float32Array(lightPos));
     gl.uniform1i(shaderProgram.texSampler, 0);
+    gl.uniform1i(shaderProgram.textureLighting, textureLighting);
+    gl.uniform1f(shaderProgram.lightIntensity, lightIntensity);
 
     gl.drawArrays(gl.TRIANGLES, 0, imgBuffer.positionBuffer.numItems);
 }

@@ -24,7 +24,7 @@ var vs_src = `
         texCoords = vec2((pos.x + 1.0) / 2.0, -(pos.y - 1.0) / 2.0);
 
         vec3 correctedNormal = normalize(normal);
-        correctedNormal = vec3(correctedNormal.x, -correctedNormal.y, -correctedNormal.z);
+        correctedNormal = vec3(-correctedNormal.x, correctedNormal.y, -correctedNormal.z);
         fNormal = correctedNormal;
 
         gl_Position = vec4(pos, 1.0);
