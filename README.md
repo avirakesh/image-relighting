@@ -23,6 +23,11 @@ Lights that are reflected at other angles cannot be captured by viewer
 ```
 
 To conclude, only lights that is vertical to the surface of original picture can be captured by viewer. In normal situations, the generally holding fact is that lights reflected by surface that forbids light reflections vertical to the surface of picture. It does not matter if such surfaces cannot be captured by depth map. 
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ## Our Plan
 1. Build a 3D model for 2D picture based on its depth map
 2. Add lighting effects using a shader
@@ -42,10 +47,24 @@ In a more complicated situation, depth map cannot capture details that is too sm
 The second tunnel that is far away has a small depth (circled in green), 
 which is very different from the reality.
 ```
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ## Calculate Normal for Each Pixel
-
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ## Apply Shader
 Add a shader program is actually simple job because every WebGL application needs a shader program.
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ## Results
 ### Add lights at the front of the bird
 ![original](/images/readme/bird.jpg) ![added light](/images/readme/bird-breast-light.png) ![without texture](/images/readme/bird-breast-normal.png)
@@ -56,6 +75,11 @@ Suppose a small LED is placed in front of the bird.
 The furs on the breast of the bird are lighted up.
 Some dark areas in at the connection between the bird and grass, which is a lower region of the grass.
 The back of the bird is not affected.
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ### Add lights at the back of the bird
 ![original](/images/readme/bird.jpg) ![added light](/images/readme/bird-back-light.png) ![without texture](/images/readme/bird-back-normal.png)
 
@@ -63,6 +87,11 @@ The back of the bird is not affected.
 
 Suppose lights come from the back of the bird.
 The breast of the bird is not affected.
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ### Add lights on the surface of the largest coke can
 ![original](/images/readme/coke.jpg) ![added light](/images/readme/coke-light.png) ![without texture](/images/readme/coke-normal-graph.png)
 
@@ -71,24 +100,39 @@ The breast of the bird is not affected.
 It looks like there is a torch light pointing to the largest can.
 The reflection light is also metal-like.
 However, the edge of the can look very strange due to the quality of depth map.
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ### Add lights at the right wall of the tunnel
 ![original](/images/readme/tunnel.jpg) ![added light](/images/readme/tunnel-right-light.png) ![without texture](/images/readme/tunnel-normal-graph.png) 
 
 `original | relighted | no texture`
 
-### Add lights on the surface of the largest coke can
-![original](/images/readme/coke.jpg) ![added light](/images/readme/coke-light.png) ![without texture](/images/readme/coke-normal-graph.png)
-
-`original | relighted | no texture`
-
 The result was unexpectedly bad. There are many squares both on the wall and on the floor. Inaccurate depth map almost determines the quality of construction of re-lighting effects.
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ## Some Limitations
 1. This method is very sensitive to the quality of depth map. A low quality depth map simply create disastrous lighting effects.
 2. Lights below surface is not blocked. If you happen to move the light source behind the wall or underneath the grass, some lower areas will still be lighted up.
 3. Creating mesh takes a long time. Each reload needs 5 - 7 seconds.
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
 ## Discussions
 Our results heavily rely on the quality of depth map, mainly the noise in the depth map picture. It is not a good thing because it is difficult to obtain highly accurate depth map from normal equipments now. It is also a good news because there are many mature techniques to denoise pictures. A good depth map picture like the one of the bird can produce realistic results. 
 
 The texture of the objects may also determine how we evaluate the "realisticness" of the re-lighted pictures. Bird's furs and grass are "spiky" objects, which by their nature mitigate the effects of noises. Tunnel walls and ground are somewhat smooth regions with slight and smooth "bumps", noises can therefore significantly corrupts the smoothness between lower and higher points little bumps. 
 
 Depth map itself also limits the amount of details that can be used to re-light the image. Depth map is essentially intensity graphs where more black means closer to viewer and more white means further to viewer or vise versa. Pixel values of intensity graphs vary from 0 - 255, which is not enough to capture all information if the actual object is very deep, e.g. a tunnel. It might be sufficient for objects with small depth, such as a bird or a coke can.
+<br/>
+<div align="right">
+    <b><a href="#----">↥ back to top</a></b>
+</div>
+<br/>
