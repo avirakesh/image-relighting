@@ -25,11 +25,11 @@ var lightIntensitySpan;
 
 var images = {
     img: [
-        "tunnel.jpg",
+        "bird.jpg",
         "coke.jpg",
+        "tunnel.jpg",
         "room.jpg",
         "shelf.jpg",
-        "bird.jpg",
         "flower.jpg",
         "misc.jpg",
         'office.jpg',
