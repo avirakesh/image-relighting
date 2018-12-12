@@ -1,6 +1,17 @@
 # Image-relighting
 Group members: Avichal Rakesh, Jack Chen, ZhaoKun Xu, Sherry Xu
-To play around with the re-lighting with the examples we provided, visit [GitHub Pages](https://avichalrakesh.com/image-relighting/)
+To play around with the re-lighting with the examples we provided, visit [here](https://avichalrakesh.com/image-relighting/)
+
+Index
+- [Goal](https://github.com/avirakesh/image-relighting#goal)
+- [Inspiration](https://github.com/avirakesh/image-relighting#inspiration)
+- [Our Plan](https://github.com/avirakesh/image-relighting#our-plan)
+- [Turn Plane Picture to 3D Model](https://github.com/avirakesh/image-relighting#turn-plane-picture-to-3d-model)
+- [Results](https://github.com/avirakesh/image-relighting#results)
+  - [Bird 1](https://github.com/avirakesh/image-relighting#add-lights-at-the-front-of-the-bird)
+  - [Bird 2](https://github.com/avirakesh/image-relighting#add-lights-at-the-back-of-the-bird)
+  - [Coke](https://github.com/avirakesh/image-relighting#add-lights-on-the-surface-of-the-largest-coke-can)
+  - [Tunnel](https://github.com/avirakesh/image-relighting#add-lights-at-the-right-wall-of-the-tunnel)
 
 ## Goal
 When a picture is taken, it is easy to change to brightness of specific regions, but it is difficult to add more realistic light sources to the picture without careful manipulations. We attempt to make it easier to add new light sources to picture.
@@ -77,13 +88,12 @@ However, the edge of the can look very strange due to the quality of depth map.
 `original | relighted | no texture`
 
 The result was unexpectedly bad. There are many squares both on the wall and on the floor. Inaccurate depth map almost determines the quality of construction of re-lighting effects.
-## Some Limitations
-1. This method is very sensitive to the quality of depth map. A low quality depth map simply create disastrous lighting effects.
-2. Lights below surface is not blocked. If you happen to move the light source behind the wall or underneath the grass, some lower areas will still be lighted up.
-3. Creating mesh takes a long time. Each reload needs 5 - 7 seconds.
 ## Discussions
-Our results heavily rely on the quality of depth map, mainly the noise in the depth map picture. It is not a good thing because it is difficult to obtain highly accurate depth map from normal equipments now. It is also a good news because there are many mature techniques to denoise pictures. A good depth map picture like the one of the bird can produce realistic results. 
+Our results heavily rely on the quality of depth map, mainly the noise in the depth map picture. It is not a good thing because it is difficult to obtain highly accurate depth map from normal equipments now. Additionally, a low quality depth map simply create disastrous lighting effects. It is also a good news because there are many mature techniques to denoise pictures. A good depth map picture like the one of the bird can produce realistic results. 
 
 The texture of the objects may also determine how we evaluate the "realisticness" of the re-lighted pictures. Bird's furs and grass are "spiky" objects, which by their nature mitigate the effects of noises. Tunnel walls and ground are somewhat smooth regions with slight and smooth "bumps", noises can therefore significantly corrupts the smoothness between lower and higher points little bumps. 
 
 Depth map itself also limits the amount of details that can be used to re-light the image. Depth map is essentially intensity graphs where more black means closer to viewer and more white means further to viewer or vise versa. Pixel values of intensity graphs vary from 0 - 255, which is not enough to capture all information if the actual object is very deep, e.g. a tunnel. It might be sufficient for objects with small depth, such as a bird or a coke can.
+
+Some engineering problems we have not yet solved. Lights below surface is not blocked. If you happen to move the light source behind the wall or underneath the grass, some lower areas will still be lighted up. Creating mesh takes a long time. Each reload needs 5 - 7 seconds. This may be upsetting our graders if they want to play around with our demo website [here](https://avichalrakesh.com/image-relighting/)
+[Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
