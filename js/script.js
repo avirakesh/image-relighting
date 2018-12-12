@@ -42,6 +42,7 @@ var images = {
 var imgIdx = 8;
 
 var canvasDrag = false;
+var mouseInCanvas = false;
 
 window.onload = function() {
 
@@ -117,6 +118,23 @@ function startProcessing() {
         }
     })
 
+    canvas.addEventListener('mouseenter', () => {mouseInCanvas = true})
+    canvas.addEventListener('mouseout', () => {mouseInCanvas = false})
+
+    window.addEventListener('wheel', function(event) {
+        if (mouseInCanvas) {
+            event.preventDefault()
+            var delta = event.deltaY / 100
+            this.console.log(delta)
+            this.console.log(zlightSlider.value)
+            delta = Number(zlightSlider.value) + delta
+            Math.abs(delta)>100 ? delta>0 ? delta=100 : delta=-100 : delta = delta
+            zlightSlider.value = delta
+            this.console.log(zlightSlider.value)
+            sliderUpdate();
+        }
+    })
+
     document.getElementById('loader-overlay-div').setAttribute('style', 'display: none; visibility: hidden;')
     lightPosSpan.innerHTML = '[' + lightPos[0] + ', ' + lightPos[1] + ', ' + lightPos[2] + ']';
     lightIntensitySpan.innerHTML = lightIntensity;
@@ -126,14 +144,17 @@ function startProcessing() {
 }
 
 function updateLightFromCanvas(event) {
-    var x = event.pageX - canvas.offsetLeft;
-    var y = event.pageY - canvas.offsetTop;
-
-    x = (2 * x / canvas.width) - 1;
-    y = -((2 * y / canvas.height) - 1);
-
-    xlightSlider.value = Math.round(x * 100);
-    ylightSlider.value = Math.round(y * 100);
+    if (event) {
+        var rect = canvas.getBoundingClientRect()
+        var x = event.pageX - rect.left;
+        var y = event.pageY - rect.top;
+        
+        x = (2 * x / canvas.width) - 1;
+        y = -((2 * y / canvas.height) - 1);
+    
+        xlightSlider.value = Math.round(x * 100);
+        ylightSlider.value = Math.round(y * 100);
+    }
     sliderUpdate();
 }
 
