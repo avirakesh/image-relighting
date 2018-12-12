@@ -72,7 +72,7 @@ It looks like there is a torch light pointing to the largest can.
 The reflection light is also metal-like.
 However, the edge of the can look very strange due to the quality of depth map.
 ### Add lights at the right wall of the tunnel
-![original](/images/readme/tunnel.jpg) ![added light](/images/readme/tunnel-light-right.png) ![without texture](/images/readme/tunnel-normal-graph.png) 
+![original](/images/readme/tunnel.jpg) ![added light](/images/readme/tunnel-right-light.png) ![without texture](/images/readme/tunnel-normal-graph.png) 
 
 `original | relighted | no texture`
 
