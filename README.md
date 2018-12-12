@@ -21,9 +21,11 @@ Lights that are reflected at other angles cannot be captured by viewer
 
 To conclude, only lights that is vertical to the surface of original picture can be captured by viewer. In normal situations, the generally holding fact is that lights reflected by surface that forbids light reflections vertical to the surface of picture. It does not matter if such surfaces cannot be captured by depth map. 
 ## Our Plan
-
+1. Build a 3D model for 2D picture based on its depth map
+2. Add lighting effects using a shader
+3. Leverage WebGL for real time rendering
 ## Turn Plane Picture to 3D Model
-
+The underlying theory is the simple: for every pixel of a given picture, add one more value from corresponding position in its depth map. Then, tell webgl to render the picture to 3D model. Colors can be added by using the original picture as texture, and then binding the texture to the rendered 3D model. In order to show the effect of our 3D model, we also implemented a demo where the 3D model can rotate.
 ## Calculate Normal for Each Pixel
 
 ## Apply Shader
