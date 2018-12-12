@@ -124,10 +124,10 @@ function startProcessing() {
     window.addEventListener('wheel', function(event) {
         if (mouseInCanvas) {
             event.preventDefault()
-            var delta = event.deltaY / 100
+            var delta = event.deltaY / 80
             this.console.log(delta)
             this.console.log(zlightSlider.value)
-            delta = Number(zlightSlider.value) + delta
+            delta = Number(zlightSlider.value) - delta
             Math.abs(delta)>100 ? delta>0 ? delta=100 : delta=-100 : delta = delta
             zlightSlider.value = delta
             this.console.log(zlightSlider.value)
