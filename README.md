@@ -19,7 +19,7 @@ Lights that are vertical to the surface of screen can be seen by viewer
 Lights that are reflected at other angles cannot be captured by viewer
 ```
 
-To conclude, only lights that is vertical to the surface of original picture can be captured by viewer. In normal situations, lights reflected by surface that forbids light reflections vertical to the surface of picture. It does not matter if such surfaces cannot be captured by depth map. 
+To conclude, only lights that is vertical to the surface of original picture can be captured by viewer. In normal situations, the generally holding fact is that lights reflected by surface that forbids light reflections vertical to the surface of picture. It does not matter if such surfaces cannot be captured by depth map. 
 ## Our Plan
 
 ## Turn Plane Picture to 3D Model
