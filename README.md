@@ -27,13 +27,13 @@ To conclude, only lights that is vertical to the surface of original picture can
 ## Turn Plane Picture to 3D Model
 The underlying theory is the simple: for every pixel of a given picture, add one more value from corresponding position in its depth map. Then, tell webgl to render the picture to 3D model. Colors can be added by using the original picture as texture, and then binding the texture to the rendered 3D model. In order to show the effect of our 3D model, we also implemented a demo where the 3D model can rotate.
 
-![alt text](/images/readme/bird-3D-0.gif)
+![alt text](/images/readme/bird-small.jpg)![alt text](/images/readme/bird-3D-0.gif)
 ```
 We can see in a simple situation, depth map can capture the real objects' shapes in a picture. 
 The little bird is sitting on the grass. 
 We can easily refer that the part of bird's body that is underneath the surface of grass can barely be seen even in reality. 
 ```
-![alt text](/images/readme/tunnel-3D.gif)
+![alt text](/images/readme/tunnel-small.jpg)![alt text](/images/readme/tunnel-3D.gif)
 ```
 In a more complicated situation, depth map cannot capture details that is too small or too far away. 
 The second tunnel that is far away has a small depth, which is very different from the reality.
