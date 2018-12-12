@@ -136,7 +136,7 @@ function startProcessing() {
     })
 
     document.getElementById('loader-overlay-div').setAttribute('style', 'display: none; visibility: hidden;')
-    lightPosSpan.innerHTML = '[' + lightPos[0] + ', ' + lightPos[1] + ', ' + lightPos[2] + ']';
+    lightPosSpan.innerHTML = '[' + lightPos[0].toFixed(2) + ', ' + lightPos[1].toFixed(2) + ', ' + lightPos[2].toFixed(2) + ']';
     lightIntensitySpan.innerHTML = lightIntensity;
     draw();
 
