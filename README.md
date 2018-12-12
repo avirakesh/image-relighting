@@ -1,7 +1,7 @@
-# Image-relighting
+# Image Relighting
 Group members: Avichal Rakesh, Jack Chen, ZhaoKun Xu, Sherry Xu
 
-To play around with the re-lighting with the examples we provided, visit [here](https://avichalrakesh.com/image-relighting/)
+Play around with the examples at [avichalrakesh.com/image-relighting/](https://avichalrakesh.com/image-relighting/)
 
 #### Index
 - [Goal](https://github.com/avirakesh/image-relighting#goal)
@@ -18,89 +18,124 @@ To play around with the re-lighting with the examples we provided, visit [here](
 ## Goal
 When a picture is taken, it is easy to change to brightness of specific regions, but it is difficult to add more realistic light sources to the picture without careful manipulations. We attempt to make it easier to add new light sources to picture.
 ## Inspiration
-In video games, we can often see fancy light and shadow effects. Objects are not only lighted up, but are also reflecting lights to other objects. Different objects also have different light properties, metal lights are more shiny while plastic lights have more scattering. Those effects are rendered by professional lighting engines, lights are calculated in real time based on the shape of 3D models. It will be quite easy to add lighting effects if professional lighting engines can be applied to 2D pictures. 
+In video games, we can often see fancy light and shadow effects. Objects are lit up, have reflections, and cast shadows. Different objects also have different optical properties: light bouncing off metallic surfaces are sharper vs. light bouncing off a plastic surface, which is more difffused. These effects are rendered by shaders, which calculate lighting of a 3D modeled scene in real time. We take this concept of shaders to add lighting to a 2D image.
 
-How can we bridge the gap between 2D and 3D? 
+#### How to bridge the gap between 2D and 3D? 
 
-New technologies have enable depth detection in new cellphones and cameras. Depth detection has been used for many applications such as facial detection and augmented reality. Depth map can add z-axis to 2D pictures taken by cellphones or cameras. Even though, we are not able to reconstruct entire 3D models of all objects in 2D pictures, is it possible to add lighting effects to 2D pictures by extending z variables of every pixel? 
+ New technologies have enabled depth detection in consumer electronics. Depth detection is used for applications such as facial detection, augmented reality, and bokeh effect. This depth map is the link between 3D model, and 2D pictures taken by cellphones or cameras. Even though, we cannot to reconstruct entire 3D models of all objects from a single image, it is possible to get an idea of how far an object in the scene is from the camera. 
 
-Mostly importantly, no matter how many lighting effects are to be added to a 2D picture, we are still viewing the effects from the only one and fixed angle. Therefore, we considered the following situations.
+To apply a shader to the 3D model, we will only need to consider the light rays that intersect the screen, which in turn means we can approximate the surfaces that do not face the screen, and still get an acceptable result.
 
 ![alt text](/images/readme/viewer1.png)
-```
-Lights that are vertical to the surface of screen can be seen by viewer
-```
-![alt text](/images/readme/viewer2.png)
-```
-Lights that are reflected at other angles cannot reach viewer
-```
 
-To conclude, only lights that is vertical to the surface of original picture can be captured by viewer. In normal situations, the generally holding fact is that lights reflected by surface that forbids light reflections vertical to the surface of picture. It does not matter if such surfaces cannot be captured by depth map. 
+`Img 1. Light rays that intersect the screen can be seen by viewer`
+
+![alt text](/images/readme/viewer2.png)
+
+`Img 2. Lights rays that are reflected at other angles does not reach the camera, and are not captured`
+
+To conclude, only light rays that intersect the screen can be captured by the camera. This allows us to ignore surfaces that are at an off-angle with respect to the camera. 
+
+For example, the back face of a cube does not have any effect on what the camera sees. So in reconstructing the 3D scene with just a cube, we can ignore the back face since it doesn't add to the lighting of the scene.
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
 ## Our Plan
-1. Build a 3D model for 2D picture based on its depth map
-2. Add lighting effects using a shader
+1. Build a 3D model from the 2D picture and its depth map
+2. Add lighting using a shader
 3. Leverage WebGL for real time rendering
-## Turn Plane Picture to 3D Model
-The underlying theory is the simple: for every pixel of a given picture, add one more value from corresponding position in its depth map. Then, tell webgl to render the picture to 3D model. Colors can be added by using the original picture as texture, and then binding the texture to the rendered 3D model. In order to show the effect of our 3D model, we also implemented a demo where the 3D model can rotate.
 
-![alt text](/images/readme/bird-small.jpg)  ![alt text](/images/readme/bird-3D-0.gif)
-```
-We can see in a simple situation, depth map can capture the real objects' shapes in a picture. 
-The little bird is sitting on the grass. 
-We can easily refer that the part of bird's body underneath the surface of grass can barely be seen even in reality. 
-```
+## Turning 2-dimensional Picture to 3-dimensional Model
+The underlying theory is the simple: for every pixel of a given picture, add one more value from corresponding position in its depth map. Then, tell webgl to render the picture to 3D model. Colors can be added by using the original picture as texture, and then binding the texture to the rendered 3D model. In order to show the effect of our 3D model. Following GIFs show the 3D model generated from images and their depth map.
+
+![Small Bird 2D + Depthmap](/images/readme/bird-small.jpg)  ![Small Bird 3D](/images/readme/bird-3D-0.gif)
+
+`The images above show what a 3D model recontructed from an image and its depthmap looks like. Notice that the obscured surfaces (i.e. surfaces under the bird) has very little effect on the final model.`
+
 ![alt text](/images/readme/tunnel-small.jpg)  ![alt text](/images/readme/tunnel-3D.gif)
-```
-In a more complicated situation, depth map cannot capture details that is too small or too far away. 
-The second tunnel that is far away has a small depth (circled in green), 
-which is very different from the reality.
-```
+
+`This example is a little more complicated, and shows some floaws of our approach. Since depthmap has limited resolution (i.e. each pixel contains only 8-bit values), we lose some details about the true depth of the scene. This is exemplified in the small tunnel (in green circle) which shows up as a very tiny bump in the 3D model, as opposed to a full tunnel.`
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
 ## Calculate Normal for Each Pixel
 
-## Apply Shader
-Add a shader program is actually simple job because every WebGL application needs a shader program.
+Calculating normals was done trhough first principle. Normal of a surface is the cross product of 2 non parallel vectors on the surface.
+
+
+To get the normal at a pixel `p`, we chose it's 4 diagonal neighbors. Since the distance between `p` and its neighboring pixels can be assumed to be small, we can consider the neighboring pixels, and `p` to lie on the same infinitesimal plane. 
+
+From these 5 points, we find 4 vectors, and take their cross product to find intermediate normals, and finally add them to find the surface normalr at that point.
+
+![surface normal](/images/readme/normal-illustration.gif)
+
+`The above illustraction shows how normal can be calculated for it's neighboring points. v1, v2, v3, v4 are the vectors from p to its neighbors. v12, v23, v34 and v41 are intermediate normals calculated by taking the cross products of v1 and v2, v2 and v3, v3 and v4, and v4 and v1 respectively. These intermediates are averaged out to obtain the final normal v of the point.`
+
+Although our approach  of calculating normals works in most cases, it fails in the situations where distance between neighboring pixel is too large.
+
+## Applying Shader
+
+We chose to go with a mainstream shader to add lighting to our model. We decided to use the Blinn-Phong model. More information about the Blinn-Phong shader can be found [here](https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_shading_model).
+
+However, the specular part of Blnn-Phong shader is sensitive to noise, so to improve the result and make the model look smoother, we removed the diffuse aspect of Blinn-Phong shader, and only used the diffused lighting.
+
 ## Results
-### Add lights at the front of the bird
-![original](/images/readme/bird.jpg) `original`
 
-![added light](/images/readme/bird-breast-light.png) `relighted`
+Following are some results of our projects. Feel free to head over [here](https://avichalrakesh.com/image-relighting/), and try the examples out yourself!
 
-![without texture](/images/readme/bird-breast-normal.png) `no texture`
+#### Light at the front of the bird
+![original](/images/readme/bird.jpg) 
+
+`original`
+
+![added light](/images/readme/bird-breast-light.png) 
+
+`relighted`
+
+![without texture](/images/readme/bird-breast-normal.png) 
+
+`no texture`
 
 Suppose a small LED is placed in front of the bird.
-The furs on the breast of the bird are lighted up.
+The furs on the breast of the bird are lit up.
 Some dark areas in at the connection between the bird and grass, which is a lower region of the grass.
 The back of the bird is not affected.
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
-### Add lights at the back of the bird
-![original](/images/readme/bird.jpg) `original`
+#### Light at the back of the bird
+![original](/images/readme/bird.jpg) 
 
-![added light](/images/readme/bird-back-light.png) `relighted`
+`original`
 
-![without texture](/images/readme/bird-back-normal.png) `no texture`
+![added light](/images/readme/bird-back-light.png) 
+
+`relighted`
+
+![without texture](/images/readme/bird-back-normal.png) 
+
+`no texture`
 
 Suppose lights come from the back of the bird.
 The breast of the bird is not affected.
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
-### Add lights on the surface of the largest coke can
-![original](/images/readme/coke.jpg) `original`
+### Light on the surface of the largest coke can
+![original](/images/readme/coke.jpg) 
 
-![added light](/images/readme/coke-light.png) `relighted`
+`original`
 
-![without texture](/images/readme/coke-normal-graph.png) `no texture`
+![added light](/images/readme/coke-light.png) 
+
+`relighted`
+
+![without texture](/images/readme/coke-normal-graph.png) 
+
+`no texture`
 
 It looks like there is a torch light pointing to the largest can.
 The reflection light is also metal-like.
 However, the edge of the can look very strange due to the quality of depth map.
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
-### Add lights at the right wall of the tunnel
+#### Light at the right wall of the tunnel
 ![original](/images/readme/tunnel.jpg) `original`
 
 ![added light](/images/readme/tunnel-right-light.png) `relighted`
@@ -113,10 +148,10 @@ The result was unexpectedly bad. There are many squares both on the wall and on 
 ## Discussions
 Our results heavily rely on the quality of depth map, mainly the noise in the depth map picture. It is not a good thing because it is difficult to obtain highly accurate depth map from normal equipments now. Additionally, a low quality depth map simply create disastrous lighting effects. It is also a good news because there are many mature techniques to denoise pictures. A good depth map picture like the one of the bird can produce realistic results. 
 
-The texture of the objects may also determine how we evaluate the "realisticness" of the re-lighted pictures. Bird's furs and grass are "spiky" objects, which by their nature mitigate the effects of noises. Tunnel walls and ground are somewhat smooth regions with slight and smooth "bumps", noises can therefore significantly corrupts the smoothness between lower and higher points little bumps. 
+The texture of the objects may also determine how we evaluate the "realisticness" of the re-lighted pictures. Bird's furs and grass are "chaotic" objects, which by their nature mitigate the effects of noises. Tunnel walls and ground are somewhat smooth regions with slight and smooth "bumps", noises can therefore significantly corrupts the smoothness between lower and higher points little bumps. 
 
 Depth map itself also limits the amount of details that can be used to re-light the image. Depth map is essentially intensity graphs where more black means closer to viewer and more white means further to viewer or vise versa. Pixel values of intensity graphs vary from 0 - 255, which is not enough to capture all information if the actual object is very deep, e.g. a tunnel. It might be sufficient for objects with small depth, such as a bird or a coke can.
 
-Some engineering problems we have are not yet solved. Lights below surface is not blocked. If you happen to move the light source behind the wall or underneath the grass, some lower areas will still be lighted up. Creating mesh takes a long time. Each reload needs 5 - 7 seconds. This may be upsetting our graders if they want to play around with our demo website [here](https://avichalrakesh.com/image-relighting/)
+Some engineering problems we have are not yet solved. Lights below surface is not blocked. If you happen to move the light source behind the wall or underneath the grass, some lower areas will still be lighted up. Creating mesh takes a long time. Each reload needs 5 - 7 seconds.
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
