@@ -65,9 +65,7 @@ which is very different from the reality.
 Add a shader program is actually simple job because every WebGL application needs a shader program.
 ## Results
 ### Add lights at the front of the bird
-![original](/images/readme/bird.jpg) ![added light](/images/readme/bird-breast-light.png) ![without texture](/images/readme/bird-breast-normal.png)
-
-`original | relighted | no texture`
+`original`![original](/images/readme/bird.jpg) `relighted`![added light](/images/readme/bird-breast-light.png) `no texture`![without texture](/images/readme/bird-breast-normal.png)
 
 Suppose a small LED is placed in front of the bird.
 The furs on the breast of the bird are lighted up.
@@ -76,18 +74,14 @@ The back of the bird is not affected.
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
 ### Add lights at the back of the bird
-![original](/images/readme/bird.jpg) ![added light](/images/readme/bird-back-light.png) ![without texture](/images/readme/bird-back-normal.png)
-
-`original | relighted | no texture`
+`original`![original](/images/readme/bird.jpg) `relighted`![added light](/images/readme/bird-back-light.png) `no texture`![without texture](/images/readme/bird-back-normal.png)
 
 Suppose lights come from the back of the bird.
 The breast of the bird is not affected.
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
 ### Add lights on the surface of the largest coke can
-![original](/images/readme/coke.jpg) ![added light](/images/readme/coke-light.png) ![without texture](/images/readme/coke-normal-graph.png)
-
-`original | relighted | no texture`
+`original`![original](/images/readme/coke.jpg) `relighted`![added light](/images/readme/coke-light.png) `no texture`![without texture](/images/readme/coke-normal-graph.png)
 
 It looks like there is a torch light pointing to the largest can.
 The reflection light is also metal-like.
