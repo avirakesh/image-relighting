@@ -117,6 +117,6 @@ The texture of the objects may also determine how we evaluate the "realisticness
 
 Depth map itself also limits the amount of details that can be used to re-light the image. Depth map is essentially intensity graphs where more black means closer to viewer and more white means further to viewer or vise versa. Pixel values of intensity graphs vary from 0 - 255, which is not enough to capture all information if the actual object is very deep, e.g. a tunnel. It might be sufficient for objects with small depth, such as a bird or a coke can.
 
-Some engineering problems we have not yet solved. Lights below surface is not blocked. If you happen to move the light source behind the wall or underneath the grass, some lower areas will still be lighted up. Creating mesh takes a long time. Each reload needs 5 - 7 seconds. This may be upsetting our graders if they want to play around with our demo website [here](https://avichalrakesh.com/image-relighting/)
+Some engineering problems we have are not yet solved. Lights below surface is not blocked. If you happen to move the light source behind the wall or underneath the grass, some lower areas will still be lighted up. Creating mesh takes a long time. Each reload needs 5 - 7 seconds. This may be upsetting our graders if they want to play around with our demo website [here](https://avichalrakesh.com/image-relighting/)
 
 [Back to Top](https://github.com/avirakesh/image-relighting#image-relighting)
