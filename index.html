@@ -1,93 +1,122 @@
 <!DOCTYPE html>
 <html>
     <head>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h"
+            crossorigin="anonymous">
+
         <script src="js/twgl-full.min.js"></script>
         <script src="js/vs.js"></script>
         <script src="js/fs.js"></script>
         <script src="js/image_helper.js"></script>
         <script src="js/script.js"></script>
         <script src="js/loader.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="css/style.css">
+        <title>Image Relighting</title>
     </head>
     <body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand disabled text-light">Image Relighting</a>
+        
+            <div class="" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                </ul>
+                <form class="form-inline">
+                    <a class="my-2 text-light btn btn-outline-light" href="https://github.com/avirakesh/image-relighting" target="_blank"><i class="git-icon fab fa-github"></i> Github </a>
+                </form>
+            </div>
+        </nav>
+
+
         <div class="container">
-            <div class="jumbotron">
-                <h1 class="display-4">Hello!</h1>
-                <p>You can CLICK your mouse on the picture to change horizontal position of the light source</p>
-                <p>You can SCROLL your mouse on the picture to change vertical position of the light source</p>
-                <p>You can also change the x, y, z values to achieve the above two actions</p>
-                <p>You can disable lighting effects by disabling "Light" checkbox</p>
-                <p>You can disable color effects by disabling "Texture" checkbox</p>
-                <p>To change a picture, select a picture, then click "reload" button</p>
-                <a href="https://github.com/avirakesh/image-relighting">To our Github</a>
-                <hr>
-                <div class="row">
-                    <div class="col">
-                        
-                            <canvas id="canvas"></canvas>
-                        
+            <br>
+            <div class="row">
+                <h6>This project aims to add light to an image, provided the image's depthmap. For details, check Github README.</p>
+            </div>
+            <br>
+            <div class="row">
+                <h6><u>Controls:</u></h6>
+            </div>
+            <div class="row">
+                <div class="col">Drag mouse on image</div>
+                :
+                <div class="col">Adjust (x, y) of light source</div>
+            </div>
+            <div class="row">
+                <div class="col">Scroll Mouse Wheel</div>
+                :
+                <div class="col">Adjust z of light source</div>
+            </div>
+            <br>
+            <div class="row">
+                To change image, pick an image from the dropdown menu, and click reload.
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <canvas id="canvas"></canvas>
+                </div>
+                <div class="col">
+                    <div class="form-group row d-flex justify-content-between">
+                        <div class="p-0 align-self-center">
+                            <span class="image-label"> Image: </span>
+                        </div>
+                        <div class="p-0 align-self-center">
+                            <select class="col-form-label-md" class="custom-select" id="image-select"></select>
+                        </div>
+                        <div class="p-0 align-self-center">
+                            <input class="btn btn-outline-primary col-form-label-md" type="button" value="Reload" id="reload-button">
+                        </div>
                     </div>
-                    <div class="col">
-                        <div class="sliders-div">
-                            <div class="form-group row">
-                                <div class="col p-0">
-                                    <label class="col-form-label-lg" for="image-select">Select Image</label>
-                                </div>
-                                <div class="col p-0">
-                                    <select class="col-form-label-lg" class="custom-select" id="image-select"></select>
-                                </div>
-                                <div class="col-sm p-0">
-                                    <input class="btn btn-outline-primary col-form-label-lg" type="button" value="Reload" id="reload-button">
-                                </div>
+                    <hr>
+                    <div class="row">
+                        <h6 class=""><u>Light Controls</u></h6>
+                    </div>
+                    <div class="row">
+                        <span class="col">Light Position:</span>
+                        <span class="col" id="light-pos-span"></span>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <label class="col-form-label-md" for="xlightSlider">x :</label>
+                        <input class="form-control-range" type="range" id="xlightSlider" min="-100" max="100">
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label-md" for="ylightSlider">y :</label>
+                        <input class="form-control-range" type="range" id="ylightSlider" min="-100" max="100">
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label-md" for="zlightSlider" >z :</label>
+                        <input class="form-control-range" type="range" id="zlightSlider" min="-100" max="100">
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label class="form-control-md" for="lightIntensitySlider">Light Intensity: &nbsp;&nbsp;</label>
+                        <span class="form-control-md" id="light-intensity-span"></span>
+                        <input class="form-control-range" type="range" id="lightIntensitySlider" min="0" max="200">
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-control-md" type="checkbox" id="lighting-checkbox" checked>
+                                <label class="form-check-label col-form-label-md" for="lighting-checkbox">Light</label>
                             </div>
-                            <hr>
-                            <div class="row">
-                                <p class="form-control-lg m-0">Light Controls</p>
-                            </div>
-                            <div class="row">
-                                <p class="form-control-md m-0">Position:</p>
-                                <span class="form-control-md" id="light-pos-span"></span>
-                            </div>
-                            <div class="row">
-                                <label class="col-form-label-lg" for="xlightSlider">x :</label>
-                                <input class="form-control-range" type="range" id="xlightSlider" min="-100" max="100">
-                            </div>
-                            <div class="row">
-                                <label class="col-form-label-lg" for="ylightSlider">y :</label>
-                                <input class="form-control-range" type="range" id="ylightSlider" min="-100" max="100">
-                            </div>
-                            <div class="row">
-                                <label class="col-form-label-lg" for="zlightSlider" >z :</label>
-                                <input class="form-control-range" type="range" id="zlightSlider" min="-100" max="100">
-                            </div>
-                            <hr>
-                            <div class="form-group row">
-                                <label class="form-control-lg" for="lightIntensitySlider">Light Intensity: &nbsp;&nbsp;</label>
-                                <span class="form-control-lg" id="light-intensity-span"></span>
-                                <input class="form-control-range" type="range" id="lightIntensitySlider" min="0" max="200">
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input class="form-control-lg" type="checkbox" id="lighting-checkbox" checked>
-                                        <label class="form-check-label col-form-label-lg" for="lighting-checkbox">Light</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-control-lg" type="checkbox" id="texture-checkbox" checked>
-                                        <label class="form-check-label col-form-label-lg" for="texture-checkbox">Texture</label>
-                                    </div>
-                                </div>
+                            <div class="form-check">
+                                <input class="form-control-md" type="checkbox" id="texture-checkbox" checked>
+                                <label class="form-check-label col-form-label-md" for="texture-checkbox">Texture</label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <br>
             </div>
+            <br>
         </div>
          
         <div id="loader-overlay-div">

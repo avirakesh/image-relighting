@@ -13,8 +13,13 @@ img {
     max-height: 300px;
 }
 
-.sliders-div {
-   padding-top: 20px;
+.git-icon {
+    font-size: 22px;
+    vertical-align: middle;
+}
+
+.image-label {
+    font-size: 18px;
 }
 
 
