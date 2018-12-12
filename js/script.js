@@ -50,15 +50,20 @@ window.onload = function() {
     } else {
         imgIdx = parseInt(location.search.substr(1))
     }
+    Promise.all([
+        load.img(images.depthRoot + images.img[imgIdx], "src-depth-img"),
+        load.img(images.texRoot + images.img[imgIdx], "src-tex-img"),
+    ]).then(() => {
 
-    if (!init()) {
-        return;
-    }
+        if (!init()) {
+            return;
+        }
+        setTimeout(startProcessing, 100);
+    })
 
-    document.getElementById('src-depth-img').src = images.depthRoot + images.img[imgIdx];
-    document.getElementById('src-tex-img').src = images.texRoot + images.img[imgIdx];
+    //document.getElementById('src-depth-img').src = images.depthRoot + images.img[imgIdx];
+    //document.getElementById('src-tex-img').src = images.texRoot + images.img[imgIdx];
 
-    setTimeout(startProcessing, 100);
 };
 
 function startProcessing() {

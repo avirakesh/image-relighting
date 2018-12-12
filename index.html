@@ -6,55 +6,81 @@
         <script src="js/fs.js"></script>
         <script src="js/image_helper.js"></script>
         <script src="js/script.js"></script>
-
+        <script src="js/loader.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <img id="src-depth-img">
-        <img id="src-tex-img">
-        
-            <canvas id="canvas"></canvas>
-         
-        <div class="sliders-div">
-            <u>Light Controls</u>
-            <br>
-            <label for="xlightSlider">x : </label>
-            <input type="range" id="xlightSlider" min="-100" max="100">
-            <br>
-            <label for="ylightSlider">y : </label>
-            <input type="range" id="ylightSlider" min="-100" max="100">
-            <br>
-            <label for="zlightSlider">z : </label>
-            <input type="range" id="zlightSlider" min="-100" max="100">
-            <br>
-            <span id="light-pos-span"></span>
-            <span>&nbsp;:&nbsp;&nbsp;Light Position</span>
-            <br>
-            <br>
-            <label for="lighting-checkbox">Light : </label>
-            <input type="checkbox" id="lighting-checkbox" checked>
-            <br>
-            <label for="texture-checkbox">Texture : </label>
-            <input type="checkbox" id="texture-checkbox" checked>
-            <br>
-            <br>
-            <label for="lightIntensitySlider">Light Intensity : </label>
-            <input type="range" id="lightIntensitySlider" min="0" max="200">
-            <br>
-            <span id="light-intensity-span"></span>
-            <span>&nbsp;:&nbsp;&nbsp;Light Intensity</span>
-            <br>
-            <br>
-            <br>
-            <label for="image-select"><u>Select Another Image</u></label>
-            <br>
-            <select id="image-select"></select>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" value="Reload" id="reload-button">
-            <br>
-            &nbsp;
+        <div class="container">
+            <div class="jumbotron">
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="canvas-container">
+                            <canvas id="canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="sliders-div">
+                            <div class="form-group row">
+                                <div class="col p-0">
+                                    <label class="col-form-label-lg" for="image-select">Select Image</label>
+                                </div>
+                                <div class="col p-0">
+                                    <select class="col-form-label-lg" class="custom-select" id="image-select"></select>
+                                </div>
+                                <div class="col-sm p-0">
+                                    <input class="btn btn-outline-primary col-form-label-lg" type="button" value="Reload" id="reload-button">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <p class="form-control-lg m-0">Light Controls</p>
+                            </div>
+                            <div class="row">
+                                <p class="form-control-lg m-0">Position: &nbsp</p>
+                                <span class="form-control-lg" id="light-pos-span"></span>
+                            </div>
+                            <div class="row">
+                                <label class="col-form-label-lg" for="xlightSlider">x :</label>
+                                <input class="form-control-range" type="range" id="xlightSlider" min="-100" max="100">
+                            </div>
+                            <div class="row">
+                                <label class="col-form-label-lg" for="ylightSlider">y :</label>
+                                <input class="form-control-range" type="range" id="ylightSlider" min="-100" max="100">
+                            </div>
+                            <div class="row">
+                                <label class="col-form-label-lg" for="zlightSlider" >z :</label>
+                                <input class="form-control-range" type="range" id="zlightSlider" min="-100" max="100">
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="form-control-lg" for="lightIntensitySlider">Light Intensity: &nbsp;&nbsp;</label>
+                                <span class="form-control-lg" id="light-intensity-span"></span>
+                                <input class="form-control-range" type="range" id="lightIntensitySlider" min="0" max="200">
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-control-lg" type="checkbox" id="lighting-checkbox" checked>
+                                        <label class="form-check-label col-form-label-lg" for="lighting-checkbox">Light</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-control-lg" type="checkbox" id="texture-checkbox" checked>
+                                        <label class="form-check-label col-form-label-lg" for="texture-checkbox">Texture</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
         </div>
+         
         <div id="loader-overlay-div">
             <div class="overlay-content-container">
                 <div class="spinner"></div>

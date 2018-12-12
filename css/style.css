@@ -1,7 +1,6 @@
 body {
     padding: 0;
     margin: 10;
-    overflow: hidden;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
@@ -10,12 +9,12 @@ img {
     visibility: hidden;
 }
 
+.canvas-container {
+    max-height: 300px;
+}
+
 .sliders-div {
-    position: absolute;
-    top: 50%;
-    right: 10px;;
-    text-align: end;
-    transform: translate(0, -50%);
+   padding-top: 20px;
 }
 
 
