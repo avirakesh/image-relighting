@@ -13,7 +13,7 @@ To play around with the re-lighting with the examples we provided, visit [here](
   - [Bird 2](https://github.com/avirakesh/image-relighting#add-lights-at-the-back-of-the-bird)
   - [Coke](https://github.com/avirakesh/image-relighting#add-lights-on-the-surface-of-the-largest-coke-can)
   - [Tunnel](https://github.com/avirakesh/image-relighting#add-lights-at-the-right-wall-of-the-tunnel)
--[Discussions](https://github.com/avirakesh/image-relighting#discussions)
+- [Discussions](https://github.com/avirakesh/image-relighting#discussions)
 
 ## Goal
 When a picture is taken, it is easy to change to brightness of specific regions, but it is difficult to add more realistic light sources to the picture without careful manipulations. We attempt to make it easier to add new light sources to picture.
