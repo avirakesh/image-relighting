@@ -1,4 +1,7 @@
 # Image-relighting
+Group members: Avichal Rakesh, Jack Chen, ZhaoKun Xu, Sherry Xu
+To play around with the re-lighting with the examples we provided, visit [GitHub Pages](https://avichalrakesh.com/image-relighting/)
+
 ## Goal
 When a picture is taken, it is easy to change to brightness of specific regions, but it is difficult to add more realistic light sources to the picture without careful manipulations. We attempt to make it easier to add new light sources to picture.
 ## Inspiration
@@ -42,6 +45,50 @@ which is very different from the reality.
 ## Calculate Normal for Each Pixel
 
 ## Apply Shader
-
+Add a shader program is actually simple job because every WebGL application needs a shader program.
 ## Results
+### Add lights at the front of the bird
+![original](/images/readme/bird.jpg) ![added light](/images/readme/bird-breast-light.png) ![without texture](/images/readme/bird-breast-normal.png)
 
+`original | relighted | no texture`
+
+Suppose a small LED is placed in front of the bird.
+The furs on the breast of the bird are lighted up.
+Some dark areas in at the connection between the bird and grass, which is a lower region of the grass.
+The back of the bird is not affected.
+### Add lights at the back of the bird
+![original](/images/readme/bird.jpg) ![added light](/images/readme/bird-back-light.png) ![without texture](/images/readme/bird-back-normal.png)
+
+`original | relighted | no texture`
+
+Suppose lights come from the back of the bird.
+The breast of the bird is not affected.
+### Add lights on the surface of the largest coke can
+![original](/images/readme/coke.jpg) ![added light](/images/readme/coke-light.png) ![without texture](/images/readme/coke-normal-graph.png)
+
+`original | relighted | no texture`
+
+It looks like there is a torch light pointing to the largest can.
+The reflection light is also metal-like.
+However, the edge of the can look very strange due to the quality of depth map.
+### Add lights at the right wall of the tunnel
+![original](/images/readme/tunnel.jpg) ![added light](/images/readme/tunnel-light-right.png) ![without texture](/images/readme/tunnel-normal-graph.png) 
+
+`original | relighted | no texture`
+
+### Add lights on the surface of the largest coke can
+![original](/images/readme/coke.jpg) ![added light](/images/readme/coke-light.png) ![without texture](/images/readme/coke-normal-graph.png)
+
+`original | relighted | no texture`
+
+The result was unexpectedly bad. There are many squares both on the wall and on the floor. Inaccurate depth map almost determines the quality of construction of re-lighting effects.
+## Some Limitations
+1. This method is very sensitive to the quality of depth map. A low quality depth map simply create disastrous lighting effects.
+2. Lights below surface is not blocked. If you happen to move the light source behind the wall or underneath the grass, some lower areas will still be lighted up.
+3. Creating mesh takes a long time. Each reload needs 5 - 7 seconds.
+## Discussions
+Our results heavily rely on the quality of depth map, mainly the noise in the depth map picture. It is not a good thing because it is difficult to obtain highly accurate depth map from normal equipments now. It is also a good news because there are many mature techniques to denoise pictures. A good depth map picture like the one of the bird can produce realistic results. 
+
+The texture of the objects may also determine how we evaluate the "realisticness" of the re-lighted pictures. Bird's furs and grass are "spiky" objects, which by their nature mitigate the effects of noises. Tunnel walls and ground are somewhat smooth regions with slight and smooth "bumps", noises can therefore significantly corrupts the smoothness between lower and higher points little bumps. 
+
+Depth map itself also limits the amount of details that can be used to re-light the image. Depth map is essentially intensity graphs where more black means closer to viewer and more white means further to viewer or vise versa. Pixel values of intensity graphs vary from 0 - 255, which is not enough to capture all information if the actual object is very deep, e.g. a tunnel. It might be sufficient for objects with small depth, such as a bird or a coke can.
