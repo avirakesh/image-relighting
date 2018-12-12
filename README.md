@@ -9,7 +9,12 @@ How can we bridge the gap between 2D and 3D?
 New technologies have enable depth detection in new cellphones and cameras. Depth detection has been used for many applications such as facial detection and augmented reality. Depth map can add z-axis to 2D pictures taken by cellphones or cameras. Even though, we are not able to reconstruct entire 3D models of all objects in 2D pictures, is it possible to add lighting effects to 2D pictures by extending z variables of every pixel? 
 
 Mostly importantly, no matter how many lighting effects are to be added to a 2D picture, we are still viewing the effects from the only one and fixed angle. Therefore, we considered the following situations.
+```
 ![alt text](/images/readme/viewer1.png)
+Lights that are vertical to the surface of screen can be seen by viewer
+![alt text](/images/readme/viewer2.png)
+Lights that are reflected at other angles cannot be captured by viewer
+```
 To conclude, only lights that is vertical to the surface of original picture can be captured by viewer. In normal situations, lights reflected by surface that forbids light reflections vertical to the surface of picture. It does not matter if such surfaces cannot be captured by depth map. 
 ## Our Plan
 
