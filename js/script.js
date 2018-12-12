@@ -78,13 +78,13 @@ function startProcessing() {
     zlightSlider = document.getElementById('zlightSlider');
     lightPosSpan = document.getElementById('light-pos-span');
 
-    xlightSlider.value = 0;
+    xlightSlider.value = 0.00;
     xlightSlider.addEventListener('input', sliderUpdate);
 
-    ylightSlider.value = 0;
+    ylightSlider.value = 0.00;
     ylightSlider.addEventListener('input', sliderUpdate);
 
-    zlightSlider.value = -100;
+    zlightSlider.value = -100.00;
     zlightSlider.addEventListener('input', sliderUpdate);
 
     lightingCheckbox = document.getElementById('lighting-checkbox');
@@ -160,8 +160,8 @@ function updateLightFromCanvas(event) {
 
 function sliderUpdate() {
     lightPos = [xlightSlider.value / 100, ylightSlider.value / 100, zlightSlider.value / 100];
-    lightPosSpan.innerHTML = '[' + lightPos[0] + ', ' + lightPos[1] + ', ' + lightPos[2] + ']';
-
+    lightPosSpan.innerHTML = '[' + lightPos[0].toFixed(2) + ', ' + lightPos[1].toFixed(2) + ', ' + lightPos[2].toFixed(2) + ']';
+    lightPosSpan.
     lightIntensity = lightIntensitySlider.value / 100;
     lightIntensitySpan.innerHTML = lightIntensity;
     draw();
@@ -199,19 +199,19 @@ function init() {
 
 function setCanvasSize() {
     var imgSize = ImgHelper.getImageSize();
-
-    if (window.innerWidth < imgSize[0] || window.innerHeight < imgSize[1]) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    var ratio = 0.6
+    if (window.innerWidth * ratio < imgSize[0] || window.innerHeight * ratio < imgSize[1]) {
+        canvas.width = window.innerWidth * ratio;
+        canvas.height = window.innerHeight * ratio;
 
         var aspectRatio = ImgHelper.getAspectRatio();
         console.log(aspectRatio);
 
 
-        var m_width = window.innerWidth;
+        var m_width = window.innerWidth * ratio;
         var m_height = m_width / aspectRatio;
 
-        if (m_height > window.innerHeight) {
+        if (canvas.height > canvas.width && m_height > window.innerHeight * 0.6) {
             m_height = window.innerHeight;
             m_width = m_height * aspectRatio;
         }
@@ -298,6 +298,7 @@ function setupShaderAttributes() {
 }
 
 function draw() {
+    //canvas.width = canvas.parentElement.width
     gl.clearColor(0, 0, 0, 1);
     gl.enable(gl.DEPTH_TEST);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -321,6 +322,7 @@ function draw() {
     gl.uniform1f(shaderProgram.lightIntensity, lightIntensity);
 
     gl.drawArrays(gl.TRIANGLES, 0, imgBuffer.positionBuffer.numItems);
+   
 }
 
 function setupImageSelector() {
