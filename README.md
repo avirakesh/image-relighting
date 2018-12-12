@@ -1,5 +1,6 @@
 # Image-relighting
 Group members: Avichal Rakesh, Jack Chen, ZhaoKun Xu, Sherry Xu
+
 To play around with the re-lighting with the examples we provided, visit [here](https://avichalrakesh.com/image-relighting/)
 
 #### Index
@@ -31,7 +32,7 @@ Lights that are vertical to the surface of screen can be seen by viewer
 ```
 ![alt text](/images/readme/viewer2.png)
 ```
-Lights that are reflected at other angles cannot be captured by viewer
+Lights that are reflected at other angles cannot reach viewer
 ```
 
 To conclude, only lights that is vertical to the surface of original picture can be captured by viewer. In normal situations, the generally holding fact is that lights reflected by surface that forbids light reflections vertical to the surface of picture. It does not matter if such surfaces cannot be captured by depth map. 

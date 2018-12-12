@@ -7,58 +7,69 @@
         <script src="js/image_helper.js"></script>
         <script src="js/script.js"></script>
 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <canvas id="canvas"></canvas>
-        <img id="src-depth-img">
-        <img id="src-tex-img">
-        <div class="sliders-div">
-            <u>Light Controls</u>
-            <br>
-            <label for="xlightSlider">x : </label>
-            <input type="range" id="xlightSlider" min="-100" max="100">
-            <br>
-            <label for="ylightSlider">y : </label>
-            <input type="range" id="ylightSlider" min="-100" max="100">
-            <br>
-            <label for="zlightSlider">z : </label>
-            <input type="range" id="zlightSlider" min="-100" max="100">
-            <br>
-            <span id="light-pos-span"></span>
-            <span>&nbsp;:&nbsp;&nbsp;Light Position</span>
-            <br>
-            <br>
-            <label for="lighting-checkbox">Light : </label>
-            <input type="checkbox" id="lighting-checkbox" checked>
-            <br>
-            <label for="texture-checkbox">Texture : </label>
-            <input type="checkbox" id="texture-checkbox" checked>
-            <br>
-            <br>
-            <label for="lightIntensitySlider">Light Intensity : </label>
-            <input type="range" id="lightIntensitySlider" min="0" max="200">
-            <br>
-            <span id="light-intensity-span"></span>
-            <span>&nbsp;:&nbsp;&nbsp;Light Intensity</span>
-            <br>
-            <br>
-            <br>
-            <label for="image-select"><u>Select Another Image</u></label>
-            <br>
-            <select id="image-select"></select>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" value="Reload" id="reload-button">
-            <br>
-            &nbsp;
-        </div>
-        
-        <div id="loader-overlay-div">
-                <div class="overlay-content-container">
-                    <div class="spinner"></div>
-                    <br>
-                    Creating Mesh. Please Wait!
+        <div class="container">
+            <canvas id="canvas"></canvas>
+            <img id="src-depth-img">
+            <img id="src-tex-img">
+            <div class="row">
+                <div class="col d-flex justify-content-around">
+                    <div class="sliders-div">
+                        <u>Light Controls</u>
+                        <br>
+                        <label for="xlightSlider">x : </label>
+                        <input type="range" id="xlightSlider" min="-100" max="100">
+                        <br>
+                        <label for="ylightSlider">y : </label>
+                        <input type="range" id="ylightSlider" min="-100" max="100">
+                        <br>
+                        <label for="zlightSlider">z : </label>
+                        <input type="range" id="zlightSlider" min="-100" max="100">
+                        <br>
+                        <span id="light-pos-span"></span>
+                        <span>&nbsp;:&nbsp;&nbsp;Light Position</span>
+                        <br>
+                        <br>
+                        <label for="lighting-checkbox">Light : </label>
+                        <input type="checkbox" id="lighting-checkbox" checked>
+                        <br>
+                        <label for="texture-checkbox">Texture : </label>
+                        <input type="checkbox" id="texture-checkbox" checked>
+                        <br>
+                        <br>
+                        <label for="lightIntensitySlider">Light Intensity : </label>
+                        <input type="range" id="lightIntensitySlider" min="0" max="200">
+                        <br>
+                        <span id="light-intensity-span"></span>
+                        <span>&nbsp;:&nbsp;&nbsp;Light Intensity</span>
+                        <br>
+                        <br>
+                        <br>
+                        <label for="image-select"><u>Select Another Image</u></label>
+                        <br>
+                        <select id="image-select"></select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="button" value="Reload" id="reload-button">
+                        <br>
+                        &nbsp;
+                    </div>
                 </div>
+                <div class="col">
+                    <div id="loader-overlay-div">
+                            <div class="overlay-content-container">
+                                <div class="spinner"></div>
+                                <br>
+                                Creating Mesh. Please Wait!
+                            </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
