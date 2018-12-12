@@ -147,7 +147,7 @@ function updateLightFromCanvas(event) {
     if (event) {
         var rect = canvas.getBoundingClientRect()
         var x = event.pageX - rect.left;
-        var y = event.pageY - rect.top;
+        var y = event.pageY - rect.top - 150;
         
         x = (2 * x / canvas.width) - 1;
         y = -((2 * y / canvas.height) - 1);
@@ -161,7 +161,7 @@ function updateLightFromCanvas(event) {
 function sliderUpdate() {
     lightPos = [xlightSlider.value / 100, ylightSlider.value / 100, zlightSlider.value / 100];
     lightPosSpan.innerHTML = '[' + lightPos[0].toFixed(2) + ', ' + lightPos[1].toFixed(2) + ', ' + lightPos[2].toFixed(2) + ']';
-    lightPosSpan.
+    
     lightIntensity = lightIntensitySlider.value / 100;
     lightIntensitySpan.innerHTML = lightIntensity;
     draw();
@@ -199,7 +199,7 @@ function init() {
 
 function setCanvasSize() {
     var imgSize = ImgHelper.getImageSize();
-    var ratio = 0.6
+    var ratio = 0.5
     if (window.innerWidth * ratio < imgSize[0] || window.innerHeight * ratio < imgSize[1]) {
         canvas.width = window.innerWidth * ratio;
         canvas.height = window.innerHeight * ratio;
