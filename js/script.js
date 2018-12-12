@@ -146,12 +146,13 @@ function startProcessing() {
 function updateLightFromCanvas(event) {
     if (event) {
         var rect = canvas.getBoundingClientRect()
-        var x = event.pageX - rect.left;
-        var y = event.pageY - rect.top - 150;
-        
+        var x = event.offsetX
+        var y = event.offsetY
+        //console.log(event.pageX, event.pageY)
+        //console.log(event.offsetX, event.offsetY)
         x = (2 * x / canvas.width) - 1;
         y = -((2 * y / canvas.height) - 1);
-    
+        
         xlightSlider.value = Math.round(x * 100);
         ylightSlider.value = Math.round(y * 100);
     }
@@ -199,7 +200,7 @@ function init() {
 
 function setCanvasSize() {
     var imgSize = ImgHelper.getImageSize();
-    var ratio = 0.5
+    var ratio = 1
     if (window.innerWidth * ratio < imgSize[0] || window.innerHeight * ratio < imgSize[1]) {
         canvas.width = window.innerWidth * ratio;
         canvas.height = window.innerHeight * ratio;
