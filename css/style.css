@@ -18,10 +18,13 @@ img {
     vertical-align: middle;
 }
 
+.github-button-text {
+    vertical-align: middle;
+}
+
 .image-label {
     font-size: 18px;
 }
-
 
 #loader-overlay-div {
     background-color: #ffffff;
