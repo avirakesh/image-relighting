@@ -33,7 +33,8 @@ var images = {
         "flower.jpg",
         "misc.jpg",
         'office.jpg',
-        'kitchen.jpg'
+        'kitchen.jpg',
+        'human.jpg'
     ],
     texRoot: './images/texture/',
     depthRoot: './images/depth/'
